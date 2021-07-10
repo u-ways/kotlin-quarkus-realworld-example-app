@@ -1,7 +1,12 @@
 plugins {
     kotlin("jvm") version "1.4.32"
     kotlin("plugin.allopen") version "1.4.32"
-    id( "org.jetbrains.kotlin.plugin.noarg") version "1.4.32"
+    /**
+     * FIXME: This plugin is used to resolve JPA constructor hell issues in Kotlin,
+     *  but it is not working as expected in Quarkus atm. See:
+     *  https://quarkusio.zulipchat.com/#narrow/stream/187030-users/topic/kotlin.2Eplugin.2Enoarg/near/245461656
+     */
+    kotlin( "plugin.jpa") version "1.4.32"
     id("io.quarkus")
 }
 
@@ -23,16 +28,11 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("io.quarkus:quarkus-arc")
     implementation("io.quarkus:quarkus-resteasy")
-    testImplementation("io.quarkus:quarkus-junit5")
+    testImplementation("io.quarkus:quarkus-junit5-mockito")
     testImplementation("io.rest-assured:rest-assured")
 }
 
 /** Set noArg eligible annotations ************************/
-
-noArg {
-    annotation("io.realworld.utils.NoArg")
-    invokeInitializers = true
-}
 
 group = "io.realworld"
 version = "1.0-SNAPSHOT"
