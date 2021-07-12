@@ -5,6 +5,6 @@ import io.quarkus.panache.common.Sort.ascending
 import javax.enterprise.context.ApplicationScoped
 
 @ApplicationScoped
-class TagRepository: PanacheRepositoryBase<Tag, String> {
+class TagRepository : PanacheRepositoryBase<Tag, String> {
     fun listAllNames(): List<String> = findAll(ascending()).list().map { it.name }
 }

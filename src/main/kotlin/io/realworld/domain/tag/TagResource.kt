@@ -24,7 +24,7 @@ class TagResource {
     @GET
     @Produces(APPLICATION_JSON)
     fun list(): Response = repository.listAllNames().run {
-        ok(mapOf("tags" to this)).status(OK).build()
+        ok(TagsRes(this)).status(OK).build()
     }
 
     @POST
@@ -35,9 +35,7 @@ class TagResource {
         @NotNull(message = REQUEST_BODY_MUST_NOT_BE_NULL)
         newTag: Tag,
     ): Response = repository.persist(newTag).run {
-        created(
-            fromResource(TagResource::class.java)
-                .path("/" + newTag.name).build()
-        ).status(CREATED).build()
+        created(fromResource(TagResource::class.java).path("/" + newTag.name).build())
+            .status(CREATED).build()
     }
 }
