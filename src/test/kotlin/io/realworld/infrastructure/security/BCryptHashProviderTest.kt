@@ -27,7 +27,7 @@ internal class BCryptHashProviderTest {
         val hashedPassword = bCryptHashProvider.hash(plaintextPassword)
         val result = bCryptHashProvider.verify("my password is my nose", hashedPassword)
 
-        assertFalse(result.verified)
+        assertFalse(result)
     }
 
     @Test
@@ -36,6 +36,6 @@ internal class BCryptHashProviderTest {
         val hashedPassword = bCryptHashProvider.hash(plaintextPassword)
         val result = bCryptHashProvider.verify(plaintextPassword, hashedPassword)
 
-        assertTrue(result.verified)
+        assertTrue(result)
     }
 }
