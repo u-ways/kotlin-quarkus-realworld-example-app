@@ -30,10 +30,12 @@ dependencies {
     implementation("io.quarkus:quarkus-resteasy-jackson")
     implementation("io.quarkus:quarkus-arc")
     implementation("io.quarkus:quarkus-resteasy")
+    implementation("io.quarkus:quarkus-smallrye-jwt")
+    implementation("io.quarkus:quarkus-smallrye-jwt-build")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.10.+")
-    implementation("com.auth0:java-jwt:3.8.2")
     implementation("at.favre.lib:bcrypt:0.9.0")
     testImplementation("io.quarkus:quarkus-junit5-mockito")
+    testImplementation("io.quarkus:quarkus-test-security-jwt")
     testImplementation("io.rest-assured:rest-assured")
     testImplementation("org.mockito.kotlin:mockito-kotlin:3.2.0")
 
