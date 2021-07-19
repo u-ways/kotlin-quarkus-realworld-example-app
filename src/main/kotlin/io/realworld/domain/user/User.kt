@@ -7,7 +7,10 @@ import io.quarkus.runtime.annotations.RegisterForReflection
 import io.realworld.utils.ValidationMessages.Companion.EMAIL_MUST_BE_NOT_BLANK
 import io.realworld.utils.ValidationMessages.Companion.PASSWORD_MUST_BE_NOT_BLANK
 import io.realworld.utils.ValidationMessages.Companion.USERNAME_MUST_MATCH_PATTERN
-import javax.persistence.*
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.Id
+import javax.persistence.Transient
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Pattern
@@ -44,10 +47,6 @@ data class User(
 
     @field:JsonProperty("image")
     var image: String = "",
-
-    @field:ManyToMany
-    @field:JsonIgnore
-    var follows: MutableList<User> = mutableListOf(),
 ) {
     override fun toString(): String = "User($username, $email, ${bio.take(20)}..., $image)"
 }
