@@ -23,8 +23,8 @@ class TagResource {
 
     @GET
     @Produces(APPLICATION_JSON)
-    fun list(): Response = repository.listAllNames().run {
-        ok(TagsRes(this)).status(OK).build()
+    fun list(): Response = repository.listAll().run {
+        ok(TagsResponse.build(this)).status(OK).build()
     }
 
     @POST

@@ -33,7 +33,7 @@ internal class UserResourceIT {
     fun register() {
         val newUser = UserFactory.create()
         val userRegistrationReq = newUser.run {
-            UserRegistrationReq(username, email, password)
+            UserRegistrationRequest(username, email, password)
         }
 
         `when`(repository.register(userRegistrationReq))
@@ -71,7 +71,7 @@ internal class UserResourceIT {
     @Test
     fun login() {
         val requestedUser = UserFactory.create()
-        val userLoginReq = UserLoginReq(requestedUser.email, requestedUser.password)
+        val userLoginReq = UserLoginRequest(requestedUser.email, requestedUser.password)
 
         `when`(repository.findByEmail(requestedUser.email))
             .thenReturn(requestedUser.copy(password = hashProvider.hash(requestedUser.password)))
@@ -129,7 +129,7 @@ internal class UserResourceIT {
     fun updateLoggedInUser() {
         val loggedInUser = UserFactory.create(username = "loggedInUser")
         val userUpdateReq = loggedInUser.run {
-            UserUpdateReq("newUsername", null, "newPassword", "newBio", "")
+            UserUpdateRequest("newUsername", null, "newPassword", "newBio", "")
         }
 
         `when`(repository.update(loggedInUser.username, userUpdateReq))

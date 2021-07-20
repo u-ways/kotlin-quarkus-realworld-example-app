@@ -5,7 +5,6 @@ import io.quarkus.test.junit.mockito.InjectMock
 import io.realworld.domain.exception.EmailAlreadyExistsException
 import io.realworld.domain.exception.UsernameAlreadyExistsException
 import io.realworld.support.factory.UserFactory
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.*
@@ -17,42 +16,11 @@ internal class UserRepositoryTest {
     lateinit var repository: UserRepository
 
     @Test
-    fun `given a valid user registration details, when registered, then entity should be persisted`() {
-        val newUser = UserFactory.create().run {
-            UserRegistrationReq(username, email, password)
-        }
-
-        `when`(repository.register(newUser)).thenCallRealMethod()
-        `when`(repository.findById(newUser.username)).thenReturn(null)
-        `when`(repository.findByEmail(newUser.email)).thenReturn(null)
-        `when`(repository.hashProvider.hash(newUser.password)).thenReturn(newUser.password)
-
-        repository.register(newUser)
-
-        verify(repository).persist(any<User>())
-    }
-
-    @Test
-    @Disabled("FIXME: verify is detecting 2 invocations of hashProvider#hash for some reason instead of 1")
-    fun `given a valid user registration details, when registered, then password should be hashed`() {
-        val newUser = UserFactory.create().run {
-            UserRegistrationReq(username, email, password)
-        }
-
-        `when`(repository.register(newUser)).thenCallRealMethod()
-        `when`(repository.hashProvider.hash(newUser.password)).thenReturn(anyString())
-
-        repository.register(newUser)
-
-        verify(repository).hashProvider.hash(newUser.password)
-    }
-
-    @Test
     fun `given an existing username, when registered again, then UsernameAlreadyExistsException should be thrown`() {
         val existingUsername = "existingUsername"
 
         val newUser = UserFactory.create(username = existingUsername).run {
-            UserRegistrationReq(username, email, password)
+            UserRegistrationRequest(username, email, password)
         }
 
         `when`(repository.register(newUser)).thenCallRealMethod()
@@ -70,7 +38,7 @@ internal class UserRepositoryTest {
         val existingEmail = "existing@mail.com"
 
         val newUser = UserFactory.create(email = existingEmail).run {
-            UserRegistrationReq(username, email, password)
+            UserRegistrationRequest(username, email, password)
         }
 
         `when`(repository.register(newUser)).thenCallRealMethod()
@@ -88,7 +56,7 @@ internal class UserRepositoryTest {
     fun `given an existing user, when an update with valid details occur, then repository should only update new entity details`() {
         val existingUser = UserFactory.create()
         val userUpdateReq = existingUser.run {
-            UserUpdateReq(username = "newUsername", bio = "newBio")
+            UserUpdateRequest(username = "newUsername", bio = "newBio")
         }
 
         `when`(repository.update(existingUser.username, userUpdateReq))
@@ -111,7 +79,7 @@ internal class UserRepositoryTest {
     fun `given an existing user , when an update occurs with an existing username, then UsernameAlreadyExistsException should be thrown`() {
         val existingUser = UserFactory.create()
         val anotherExistingUser = UserFactory.create()
-        val userUpdateReq = UserUpdateReq(username = anotherExistingUser.username)
+        val userUpdateReq = UserUpdateRequest(username = anotherExistingUser.username)
 
         `when`(repository.update(existingUser.username, userUpdateReq))
             .thenCallRealMethod()
@@ -133,7 +101,7 @@ internal class UserRepositoryTest {
     fun `given an existing user , when an update occurs with an existing email, then EmailAlreadyExistsException should be thrown`() {
         val existingUser = UserFactory.create()
         val anotherExistingUser = UserFactory.create()
-        val userUpdateReq = UserUpdateReq(email = anotherExistingUser.email)
+        val userUpdateReq = UserUpdateRequest(email = anotherExistingUser.email)
 
         `when`(repository.update(existingUser.username, userUpdateReq))
             .thenCallRealMethod()

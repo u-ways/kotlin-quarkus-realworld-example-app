@@ -1,6 +1,6 @@
 package io.realworld.support.factory
 
-import io.realworld.domain.profile.Profile
+import io.realworld.domain.profile.ProfileResponse
 import io.realworld.domain.user.User
 import java.util.UUID.randomUUID
 
@@ -12,7 +12,7 @@ class ProfileFactory {
         fun create(
             user: User,
             following: Boolean = false,
-        ): Profile = Profile(user.username, user.bio, user.image, following)
+        ): ProfileResponse = ProfileResponse(user.username, user.bio, user.image, following)
 
         /**
          * Creates a random profile.
@@ -22,7 +22,7 @@ class ProfileFactory {
             bio: String = "Hello, I am $username!",
             image: String = "path/to/$username.jpg",
             following: Boolean = false,
-        ): Profile = Profile(username, bio, image, following)
+        ): ProfileResponse = ProfileResponse(username, bio, image, following)
 
         /**
          * Creates X amount of profiles with random details
@@ -31,6 +31,6 @@ class ProfileFactory {
         fun create(
             amount: Int,
             following: Boolean = false,
-        ): List<Profile> = (0 until amount).map { create(following = following) }
+        ): List<ProfileResponse> = (0 until amount).map { create(following = following) }
     }
 }

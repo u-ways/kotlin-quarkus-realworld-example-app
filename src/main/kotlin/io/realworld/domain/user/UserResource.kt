@@ -44,10 +44,9 @@ class UserResource {
     @Path("/users")
     @Transactional
     @Consumes(APPLICATION_JSON)
-    @Produces(APPLICATION_JSON)
     @PermitAll
     fun register(
-        @Valid @NotNull(message = REQUEST_BODY_MUST_NOT_BE_NULL) newUser: UserRegistrationReq,
+        @Valid @NotNull(message = REQUEST_BODY_MUST_NOT_BE_NULL) newUser: UserRegistrationRequest,
     ): Response = repository.register(newUser).run {
         created(fromResource(UserResource::class.java).path("/users/$username").build())
             .status(CREATED).build()
@@ -59,10 +58,10 @@ class UserResource {
     @Produces(APPLICATION_JSON)
     @PermitAll
     fun login(
-        @Valid @NotNull(message = REQUEST_BODY_MUST_NOT_BE_NULL) userLoginReq: UserLoginReq
-    ): Response = repository.findByEmail(userLoginReq.email)?.run {
-        if (!hashProvider.verify(userLoginReq.password, password)) throw InvalidPasswordException()
-        else ok(copy(token = tokenProvider.create(username))).status(OK).build()
+        @Valid @NotNull(message = REQUEST_BODY_MUST_NOT_BE_NULL) userLoginRequest: UserLoginRequest
+    ): Response = repository.findByEmail(userLoginRequest.email)?.run {
+        if (!hashProvider.verify(userLoginRequest.password, password)) throw InvalidPasswordException()
+        else ok(UserResponse.build(this, tokenProvider.create(username))).status(OK).build()
     } ?: throw UnregisteredEmailException()
 
     @GET
@@ -73,7 +72,7 @@ class UserResource {
     fun getLoggedInUser(
         @Context securityContext: SecurityContext
     ): Response = repository.findById(securityContext.userPrincipal.name)?.run {
-        ok(copy(token = tokenProvider.create(username))).status(OK).build()
+        ok(UserResponse.build(this, tokenProvider.create(username))).status(OK).build()
     } ?: throw UserNotFoundException()
 
     @PUT
@@ -84,8 +83,8 @@ class UserResource {
     @RolesAllowed(USER, ADMIN)
     fun updateLoggedInUser(
         @Context securityContext: SecurityContext,
-        @Valid @NotNull(message = REQUEST_BODY_MUST_NOT_BE_NULL) userUpdateReq: UserUpdateReq,
-    ): Response = repository.update(securityContext.userPrincipal.name, userUpdateReq).run {
-        ok(copy(token = tokenProvider.create(username))).status(OK).build()
+        @Valid @NotNull(message = REQUEST_BODY_MUST_NOT_BE_NULL) userUpdateRequest: UserUpdateRequest,
+    ): Response = repository.update(securityContext.userPrincipal.name, userUpdateRequest).run {
+        ok(UserResponse.build(this, tokenProvider.create(username))).status(OK).build()
     }
 }

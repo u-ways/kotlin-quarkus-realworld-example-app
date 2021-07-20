@@ -1,23 +1,18 @@
 package io.realworld.domain.tag
 
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.annotation.JsonRootName
 import io.quarkus.runtime.annotations.RegisterForReflection
+import io.realworld.infrastructure.database.Tables.TAG_TABLE
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.validation.constraints.NotNull
+import javax.validation.constraints.Size
 
-@Entity
-@JsonRootName("tag")
+@Entity(name = TAG_TABLE)
 @RegisterForReflection
 data class Tag(
     @Id
-    /**
-     * In Kotlin, you will need to add the appropriate Annotation use-site targets.
-     * See: https://kotlinlang.org/docs/annotations.html#annotation-use-site-targets
-     */
     @field:NotNull
-    @field:JsonProperty("name")
+    @field:Size(min = 0, max = 31)
     var name: String = "",
 ) {
     override fun toString(): String = "Tag($name)"

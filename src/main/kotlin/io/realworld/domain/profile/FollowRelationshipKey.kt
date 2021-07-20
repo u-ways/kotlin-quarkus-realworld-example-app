@@ -8,10 +8,10 @@ import javax.persistence.Embeddable
 @Embeddable
 @RegisterForReflection
 data class FollowRelationshipKey(
-    @Column(name = "user_id")
+    @Column
     var userId: String = "",
 
-    @Column(name = "followedBy_id")
+    @Column
     var followingId: String = "",
 ) : Serializable {
     override fun toString(): String = "FollowRelationshipKey($userId, $followingId)"

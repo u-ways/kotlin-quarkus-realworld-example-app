@@ -1,6 +1,5 @@
 package io.realworld.domain.profile
 
-import io.realworld.domain.exception.ProfileNotFoundException
 import io.realworld.infrastructure.security.Role.USER
 import javax.annotation.security.PermitAll
 import javax.annotation.security.RolesAllowed
@@ -16,7 +15,6 @@ import javax.ws.rs.core.SecurityContext
 
 @Path("/profiles")
 class ProfileResource {
-
     @Inject
     @field:Default
     lateinit var repository: ProfileRepository
@@ -28,9 +26,7 @@ class ProfileResource {
     fun getProfile(
         @Context securityContext: SecurityContext,
         @PathParam("username") username: String
-    ): Response = repository.findProfile(securityContext.userPrincipal.name, username)?.run {
-        ok(this).status(OK).build()
-    } ?: throw ProfileNotFoundException()
+    ): Response = ok(repository.findProfile(username, securityContext.userPrincipal.name)).status(OK).build()
 
     @POST
     @Path("/{username}/follow")
@@ -39,10 +35,8 @@ class ProfileResource {
     fun follow(
         @Context securityContext: SecurityContext,
         @PathParam("username") username: String
-    ): Response = repository.follow(securityContext.userPrincipal.name, username).run {
-        repository.findProfile(securityContext.userPrincipal.name, username)?.run {
-            ok(this).status(OK).build()
-        } ?: throw ProfileNotFoundException()
+    ): Response = repository.follow(username, securityContext.userPrincipal.name).run {
+        ok(repository.findProfile(username, securityContext.userPrincipal.name)).status(OK).build()
     }
 
     @DELETE
@@ -52,9 +46,7 @@ class ProfileResource {
     fun unfollow(
         @Context securityContext: SecurityContext,
         @PathParam("username") username: String
-    ): Response = repository.unfollow(securityContext.userPrincipal.name, username).run {
-        repository.findProfile(securityContext.userPrincipal.name, username)?.run {
-            ok(this).status(OK).build()
-        } ?: throw ProfileNotFoundException()
+    ): Response = repository.unfollow(username, securityContext.userPrincipal.name).run {
+        ok(repository.findProfile(username, securityContext.userPrincipal.name)).status(OK).build()
     }
 }

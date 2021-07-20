@@ -29,9 +29,9 @@ internal class TagResourceIT {
 
     @Test
     fun list() {
-        val tagNames = listOf("tech", "sports", "cooking")
+        val tagNames = TagFactory.create(2)
 
-        `when`(repository.listAllNames())
+        `when`(repository.listAll())
             .thenReturn(tagNames)
 
         given()
@@ -42,11 +42,11 @@ internal class TagResourceIT {
             .body("size()", equalTo(1))
             // NOTE: Rest-Assured JsonPath implementation uses Groovy's GPath syntax.
             //  See https://github.com/rest-assured/rest-assured/wiki/Usage#json-using-jsonpath
-            .body("tags", hasItems("tech", "sports", "cooking"))
+            .body("tags", hasItems(tagNames.first().name, tagNames.last().name))
             .header(CONTENT_TYPE, APPLICATION_JSON)
             .statusCode(OK.statusCode)
 
-        verify(repository, times(1)).listAllNames()
+        verify(repository, times(1)).listAll()
     }
 
     @Test

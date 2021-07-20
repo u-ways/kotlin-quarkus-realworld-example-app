@@ -6,7 +6,7 @@ import io.quarkus.runtime.annotations.RegisterForReflection
 
 @JsonRootName("user")
 @RegisterForReflection
-data class UserUpdateReq(
+data class UserUpdateRequest(
     @field:JsonProperty("username")
     val username: String? = null,
 
@@ -21,6 +21,4 @@ data class UserUpdateReq(
 
     @field:JsonProperty("image")
     val image: String? = null,
-) {
-    override fun toString(): String = "UserUpdateReq($username, $email, $password, $bio, $image)"
-}
+)
