@@ -20,7 +20,7 @@ import javax.ws.rs.core.Response.Status.OK
 @TestHTTPEndpoint(ProfileResource::class)
 internal class ProfileResourceIT {
     @InjectMock
-    lateinit var repository: ProfileRepository
+    private lateinit var service: ProfileService
 
     @Test
     @TestSecurity(user = "loggedInUser", roles = [USER])
@@ -28,7 +28,7 @@ internal class ProfileResourceIT {
         val loggedInUser = UserFactory.create(username = "loggedInUser")
         val existingUser = UserFactory.create()
 
-        `when`(repository.findProfile(existingUser.username, loggedInUser.username))
+        `when`(service.findProfile(existingUser.username, loggedInUser.username))
             .thenReturn(ProfileFactory.create(existingUser))
 
         given()
@@ -44,7 +44,7 @@ internal class ProfileResourceIT {
             .contentType(APPLICATION_JSON)
             .statusCode(OK.statusCode)
 
-        verify(repository).findProfile(existingUser.username, loggedInUser.username)
+        verify(service).findProfile(existingUser.username, loggedInUser.username)
     }
 
     @Test
@@ -53,7 +53,7 @@ internal class ProfileResourceIT {
         val existingUser = UserFactory.create()
 
         // FIXME: is there a way to re-write this test without having to pass an "anonymous" parameter or TestSecurity?
-        `when`(repository.findProfile(existingUser.username, "anonymous"))
+        `when`(service.findProfile(existingUser.username, "anonymous"))
             .thenReturn(ProfileFactory.create(existingUser))
 
         given()
@@ -69,7 +69,7 @@ internal class ProfileResourceIT {
             .contentType(APPLICATION_JSON)
             .statusCode(OK.statusCode)
 
-        verify(repository).findProfile(existingUser.username, "anonymous")
+        verify(service).findProfile(existingUser.username, "anonymous")
     }
 
     @Test
@@ -78,7 +78,7 @@ internal class ProfileResourceIT {
         val loggedInUser = UserFactory.create(username = "loggedInUser")
         val existingUser = UserFactory.create()
 
-        `when`(repository.findProfile(existingUser.username, loggedInUser.username))
+        `when`(service.findProfile(existingUser.username, loggedInUser.username))
             .thenReturn(ProfileFactory.create(existingUser, following = true))
 
         given()
@@ -94,8 +94,8 @@ internal class ProfileResourceIT {
             .contentType(APPLICATION_JSON)
             .statusCode(OK.statusCode)
 
-        verify(repository).follow(existingUser.username, loggedInUser.username)
-        verify(repository).findProfile(existingUser.username, loggedInUser.username)
+        verify(service).follow(existingUser.username, loggedInUser.username)
+        verify(service).findProfile(existingUser.username, loggedInUser.username)
     }
 
     @Test
@@ -104,7 +104,7 @@ internal class ProfileResourceIT {
         val loggedInUser = UserFactory.create(username = "loggedInUser")
         val existingUser = UserFactory.create()
 
-        `when`(repository.findProfile(existingUser.username, loggedInUser.username))
+        `when`(service.findProfile(existingUser.username, loggedInUser.username))
             .thenReturn(ProfileFactory.create(existingUser))
 
         given()
@@ -120,7 +120,7 @@ internal class ProfileResourceIT {
             .contentType(APPLICATION_JSON)
             .statusCode(OK.statusCode)
 
-        verify(repository).unfollow(existingUser.username, loggedInUser.username)
-        verify(repository).findProfile(existingUser.username, loggedInUser.username)
+        verify(service).unfollow(existingUser.username, loggedInUser.username)
+        verify(service).findProfile(existingUser.username, loggedInUser.username)
     }
 }

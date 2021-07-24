@@ -17,7 +17,7 @@ import javax.ws.rs.core.SecurityContext
 class ProfileResource {
     @Inject
     @field:Default
-    lateinit var repository: ProfileRepository
+    lateinit var service: ProfileService
 
     @GET
     @Path("/{username}")
@@ -26,7 +26,7 @@ class ProfileResource {
     fun getProfile(
         @Context securityContext: SecurityContext,
         @PathParam("username") username: String
-    ): Response = ok(repository.findProfile(username, securityContext.userPrincipal.name)).status(OK).build()
+    ): Response = ok(service.findProfile(username, securityContext.userPrincipal.name)).status(OK).build()
 
     @POST
     @Path("/{username}/follow")
@@ -35,8 +35,8 @@ class ProfileResource {
     fun follow(
         @Context securityContext: SecurityContext,
         @PathParam("username") username: String
-    ): Response = repository.follow(username, securityContext.userPrincipal.name).run {
-        ok(repository.findProfile(username, securityContext.userPrincipal.name)).status(OK).build()
+    ): Response = service.follow(username, securityContext.userPrincipal.name).run {
+        ok(service.findProfile(username, securityContext.userPrincipal.name)).status(OK).build()
     }
 
     @DELETE
@@ -46,7 +46,7 @@ class ProfileResource {
     fun unfollow(
         @Context securityContext: SecurityContext,
         @PathParam("username") username: String
-    ): Response = repository.unfollow(username, securityContext.userPrincipal.name).run {
-        ok(repository.findProfile(username, securityContext.userPrincipal.name)).status(OK).build()
+    ): Response = service.unfollow(username, securityContext.userPrincipal.name).run {
+        ok(service.findProfile(username, securityContext.userPrincipal.name)).status(OK).build()
     }
 }
