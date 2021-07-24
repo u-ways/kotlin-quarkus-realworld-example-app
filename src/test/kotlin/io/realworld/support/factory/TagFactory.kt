@@ -9,7 +9,7 @@ class TagFactory {
          * Creates a random tag.
          */
         fun create(
-            name: String = "TAG-${randomUUID()}".substring(0, 9),
+            name: String = "TAG-${randomUUID()}".substring(0, 20),
         ): Tag = Tag(name)
 
         /**

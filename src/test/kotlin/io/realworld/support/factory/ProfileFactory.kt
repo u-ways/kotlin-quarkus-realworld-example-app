@@ -18,7 +18,7 @@ class ProfileFactory {
          * Creates a random profile.
          */
         fun create(
-            username: String = "User-${randomUUID()}".substring(0, 10),
+            username: String = "User-${randomUUID()}".substring(0, 20),
             bio: String = "Hello, I am $username!",
             image: String = "path/to/$username.jpg",
             following: Boolean = false,

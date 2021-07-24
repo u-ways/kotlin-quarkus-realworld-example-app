@@ -9,7 +9,7 @@ class UserFactory {
          * Creates a random User.
          */
         fun create(
-            username: String = "User-${randomUUID()}".substring(0, 10),
+            username: String = "User-${randomUUID()}".substring(0, 20),
             email: String = "$username@email.com",
             password: String = "password",
             bio: String = "Hello, I am $username!",
