@@ -38,6 +38,7 @@ dependencies {
     testImplementation("io.quarkus:quarkus-test-security-jwt")
     testImplementation("io.rest-assured:rest-assured")
     testImplementation("org.mockito.kotlin:mockito-kotlin:3.2.0")
+    testImplementation("nl.jqno.equalsverifier:equalsverifier:3.5")
 
     ktlint("com.pinterest:ktlint:0.41.0") {
         attributes {

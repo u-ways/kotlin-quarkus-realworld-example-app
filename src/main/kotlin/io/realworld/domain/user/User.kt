@@ -43,4 +43,14 @@ data class User(
     var follows: MutableList<User> = mutableListOf(),
 ) {
     override fun toString(): String = "User($username, $email, ${bio.take(20)}..., $image)"
+
+    override fun hashCode(): Int = username.hashCode()
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        other as User
+        if (username != other.username) return false
+        return true
+    }
 }

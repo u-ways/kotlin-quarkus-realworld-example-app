@@ -1,17 +1,15 @@
-package io.realworld.domain.user
+package io.realworld.domain.tag
 
-import io.realworld.support.factory.UserFactory
 import nl.jqno.equalsverifier.EqualsVerifier
 import nl.jqno.equalsverifier.Warning
 import org.junit.jupiter.api.Test
 
-internal class UserTest {
+internal class TagTest {
     @Test
     fun `verify the equals and hashCode contract`() {
         EqualsVerifier
             .configure().suppress(Warning.SURROGATE_KEY)
-            .forClass(User::class.java)
-            .withPrefabValues(User::class.java, UserFactory.create(), UserFactory.create())
+            .forClass(Tag::class.java)
             .verify()
     }
 }
