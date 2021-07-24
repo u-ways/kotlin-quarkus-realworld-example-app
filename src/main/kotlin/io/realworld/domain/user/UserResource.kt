@@ -21,7 +21,6 @@ import javax.ws.rs.core.MediaType.APPLICATION_JSON
 import javax.ws.rs.core.Response
 import javax.ws.rs.core.Response.Status.CREATED
 import javax.ws.rs.core.Response.Status.OK
-import javax.ws.rs.core.Response.created
 import javax.ws.rs.core.Response.ok
 import javax.ws.rs.core.SecurityContext
 import javax.ws.rs.core.UriBuilder.fromResource
@@ -48,8 +47,10 @@ class UserResource {
     fun register(
         @Valid @NotNull(message = REQUEST_BODY_MUST_NOT_BE_NULL) newUser: UserRegistrationRequest,
     ): Response = repository.register(newUser).run {
-        created(fromResource(UserResource::class.java).path("/users/$username").build())
-            .status(CREATED).build()
+        ok(UserResponse.build(this, tokenProvider.create(username)))
+            .status(CREATED)
+            .location(fromResource(UserResource::class.java).path("/users/$username").build())
+            .build()
     }
 
     @POST

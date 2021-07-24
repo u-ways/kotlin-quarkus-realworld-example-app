@@ -5,8 +5,6 @@ import io.quarkus.panache.common.Parameters.with
 import io.realworld.domain.exception.EmailAlreadyExistsException
 import io.realworld.domain.exception.UserNotFoundException
 import io.realworld.domain.exception.UsernameAlreadyExistsException
-import io.realworld.infrastructure.database.Tables.FOLLOW_RELATIONSHIP
-import io.realworld.infrastructure.database.Tables.USER_TABLE
 import io.realworld.infrastructure.security.BCryptHashProvider
 import javax.enterprise.context.ApplicationScoped
 import javax.enterprise.inject.Default
@@ -45,14 +43,4 @@ class UserRepository : PanacheRepositoryBase<User, String> {
     fun exists(subjectedUserId: String): Boolean = count(
         query = "id.username = :subjectedUserId", params = with("subjectedUserId", subjectedUserId)
     ) > 0
-
-    // An example of nested queries in Panache & HQL.
-    fun findByIdAndFetchFollowsEagerly(username: String): User? = findById(username)
-        ?.copy(
-            follows = find(
-                query = "select distinct users from $USER_TABLE users where users.username in ( " +
-                        "select follows.id.followingId from $FOLLOW_RELATIONSHIP follows where follows.id.userId = :username )",
-                params = with("username", username)
-            ).list().toMutableList()
-        )
 }
