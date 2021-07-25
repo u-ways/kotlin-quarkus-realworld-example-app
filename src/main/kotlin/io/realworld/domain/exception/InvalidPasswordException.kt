@@ -1,3 +1,5 @@
 package io.realworld.domain.exception
 
-class InvalidPasswordException : RuntimeException("Invalid password")
+import io.quarkus.security.ForbiddenException
+
+class InvalidPasswordException : ForbiddenException("Invalid password")

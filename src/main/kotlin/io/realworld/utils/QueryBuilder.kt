@@ -57,6 +57,8 @@ internal class QueryBuilder(
         toString()
     }
 
+    override fun toString(): String = build()
+
     internal interface Clause {
         val keyword: String
         val value: String
