@@ -23,7 +23,7 @@ internal class UserIT {
     internal lateinit var validator: Validator
 
     @Test
-    fun `username must not have whitespace or special characters`() {
+    fun `Given username must not have whitespace or special characters`() {
         val invalidUsername = "% invalid@Username ?!"
         val constraintViolations = validator.validate(
             UserFactory.create(username = invalidUsername, email = "valid@email.com")
@@ -37,7 +37,7 @@ internal class UserIT {
     }
 
     @Test
-    fun `username must not be blank`() {
+    fun `Given username must not be blank`() {
         val blankUsername = ""
         val constraintViolations = validator.validate(
             UserFactory.create(username = blankUsername, email = "valid@email.com")
@@ -51,7 +51,7 @@ internal class UserIT {
     }
 
     @Test
-    fun `email must be have valid format`() {
+    fun `Given email must follow valid format`() {
         val invalidEmail = "invalid@email@com"
         val constraintViolations = validator.validate(
             UserFactory.create(email = invalidEmail)
@@ -61,7 +61,7 @@ internal class UserIT {
     }
 
     @Test
-    fun `email must not be blank`() {
+    fun `Given email must not be blank`() {
         val blankEmail = ""
         val constraintViolations = validator.validate(
             UserFactory.create(email = blankEmail)
@@ -75,7 +75,7 @@ internal class UserIT {
     }
 
     @Test
-    fun `password must not be blank`() {
+    fun `Given password must not be blank`() {
         val blankPassword = ""
         val constraintViolations = validator.validate(
             UserFactory.create(password = blankPassword)

@@ -28,7 +28,7 @@ internal class TagResourceIT {
     lateinit var objectMapper: ObjectMapper
 
     @Test
-    fun list() {
+    fun `Given a list of tags, when tag list is requested, then response should return correct tags response`() {
         val tagNames = TagFactory.create(2)
 
         `when`(repository.listAll())
@@ -50,7 +50,7 @@ internal class TagResourceIT {
     }
 
     @Test
-    fun create() {
+    fun `Given a new tag, when create new tag is requested, then created response should be returned`() {
         val entity = TagFactory.create()
 
         given()

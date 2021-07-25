@@ -14,7 +14,7 @@ internal class BCryptHashProviderTest {
     }
 
     @Test
-    fun `given plaintext password, when hashed, then the password should not be the same`() {
+    fun `Given plaintext password, when hashed, then the password should not be the same`() {
         val plaintextPassword = "my password is my voice"
         val hashedPassword = bCryptHashProvider.hash(plaintextPassword)
 
@@ -22,7 +22,7 @@ internal class BCryptHashProviderTest {
     }
 
     @Test
-    fun `given hashed password, when verified with invalid plaintext, then the provider should return a negative result`() {
+    fun `Given hashed password, when verified with invalid plaintext, then the provider should return a negative result`() {
         val plaintextPassword = "my password is my voice"
         val hashedPassword = bCryptHashProvider.hash(plaintextPassword)
         val result = bCryptHashProvider.verify("my password is my nose", hashedPassword)
@@ -31,7 +31,7 @@ internal class BCryptHashProviderTest {
     }
 
     @Test
-    fun `given hashed password, when verified with valid plaintext, then the provider should return a positive result`() {
+    fun `Given hashed password, when verified with valid plaintext, then the provider should return a positive result`() {
         val plaintextPassword = "my password is my voice"
         val hashedPassword = bCryptHashProvider.hash(plaintextPassword)
         val result = bCryptHashProvider.verify(plaintextPassword, hashedPassword)

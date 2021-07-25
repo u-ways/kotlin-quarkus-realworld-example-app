@@ -18,7 +18,7 @@ internal class UserRepositoryIT {
 
     @Test
     @Transactional
-    fun `given a valid user registration details, when registered, then correct entity should be persisted`() {
+    fun `Given a valid user registration details, when registered, then correct entity should be persisted`() {
         val newUser = UserFactory.create().run {
             UserRegistrationRequest(username, email, password)
         }
@@ -35,7 +35,7 @@ internal class UserRepositoryIT {
 
     @Test
     @Transactional
-    fun `given a valid user registration details, when registered, then password should be hashed correctly`() {
+    fun `Given a valid user registration details, when registered, then password should be hashed correctly`() {
         val newUser = UserFactory.create().run {
             UserRegistrationRequest(username, email, password)
         }

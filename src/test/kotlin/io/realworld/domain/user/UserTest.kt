@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 
 internal class UserTest {
     @Test
-    fun `verify the equals and hashCode contract`() {
+    fun `Verify the equals and hashCode contract`() {
         EqualsVerifier
             .configure().suppress(Warning.SURROGATE_KEY)
             .forClass(User::class.java)

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 
 internal class TagTest {
     @Test
-    fun `verify the equals and hashCode contract`() {
+    fun `Verify the equals and hashCode contract`() {
         EqualsVerifier
             .configure().suppress(Warning.SURROGATE_KEY)
             .forClass(Tag::class.java)

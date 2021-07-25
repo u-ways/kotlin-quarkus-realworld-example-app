@@ -16,7 +16,7 @@ internal class UserRepositoryTest {
     lateinit var repository: UserRepository
 
     @Test
-    fun `given an existing username, when registered again, then UsernameAlreadyExistsException should be thrown`() {
+    fun `Given an existing username, when registered again, then UsernameAlreadyExistsException should be thrown`() {
         val existingUsername = "existingUsername"
 
         val newUser = UserFactory.create(username = existingUsername).run {
@@ -34,7 +34,7 @@ internal class UserRepositoryTest {
     }
 
     @Test
-    fun `given an existing email, when registered again, then EmailAlreadyExistsException should be thrown`() {
+    fun `Given an existing email, when registered again, then EmailAlreadyExistsException should be thrown`() {
         val existingEmail = "existing@mail.com"
 
         val newUser = UserFactory.create(email = existingEmail).run {
@@ -53,7 +53,7 @@ internal class UserRepositoryTest {
     }
 
     @Test
-    fun `given an existing user, when an update with valid details occur, then repository should only update new entity details`() {
+    fun `Given an existing user, when an update with valid details occur, then repository should only update new entity details`() {
         val existingUser = UserFactory.create()
         val userUpdateReq = existingUser.run {
             UserUpdateRequest(username = "newUsername", bio = "newBio")
@@ -76,7 +76,7 @@ internal class UserRepositoryTest {
     }
 
     @Test
-    fun `given an existing user , when an update occurs with an existing username, then UsernameAlreadyExistsException should be thrown`() {
+    fun `Given an existing user , when an update occurs with an existing username, then UsernameAlreadyExistsException should be thrown`() {
         val existingUser = UserFactory.create()
         val anotherExistingUser = UserFactory.create()
         val userUpdateReq = UserUpdateRequest(username = anotherExistingUser.username)
@@ -98,7 +98,7 @@ internal class UserRepositoryTest {
     }
 
     @Test
-    fun `given an existing user , when an update occurs with an existing email, then EmailAlreadyExistsException should be thrown`() {
+    fun `Given an existing user , when an update occurs with an existing email, then EmailAlreadyExistsException should be thrown`() {
         val existingUser = UserFactory.create()
         val anotherExistingUser = UserFactory.create()
         val userUpdateReq = UserUpdateRequest(email = anotherExistingUser.email)

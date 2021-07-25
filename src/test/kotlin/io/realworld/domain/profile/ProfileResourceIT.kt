@@ -24,7 +24,7 @@ internal class ProfileResourceIT {
 
     @Test
     @TestSecurity(user = "loggedInUser", roles = [USER])
-    fun `given an existing user, when profile is requested, then correct details should be returned`() {
+    fun `Given an existing user, when profile is requested, then correct details should be returned`() {
         val loggedInUser = UserFactory.create(username = "loggedInUser")
         val existingUser = UserFactory.create()
 
@@ -49,7 +49,7 @@ internal class ProfileResourceIT {
 
     @Test
     @TestSecurity(user = "anonymous", roles = [])
-    fun `given an existing user, when a non-authenticated user requests a profile, then they should still be able to access the profile`() {
+    fun `Given an existing user, when a non-authenticated user requests a profile, then they should still be able to access the profile`() {
         val existingUser = UserFactory.create()
 
         // FIXME: is there a way to re-write this test without having to pass an "anonymous" parameter or TestSecurity?
@@ -74,7 +74,7 @@ internal class ProfileResourceIT {
 
     @Test
     @TestSecurity(user = "loggedInUser", roles = [USER])
-    fun `given an existing user, when logged-in user follows existing user, then the follow relationship should be persisted`() {
+    fun `Given an existing user, when logged-in user follows existing user, then the follow relationship should be persisted`() {
         val loggedInUser = UserFactory.create(username = "loggedInUser")
         val existingUser = UserFactory.create()
 
@@ -100,7 +100,7 @@ internal class ProfileResourceIT {
 
     @Test
     @TestSecurity(user = "loggedInUser", roles = [USER])
-    fun `given an existing user, when logged-in user unfollows an existing user, then the follow relationship should be deleted`() {
+    fun `Given an existing user, when logged-in user unfollows an existing user, then the follow relationship should be deleted`() {
         val loggedInUser = UserFactory.create(username = "loggedInUser")
         val existingUser = UserFactory.create()
 

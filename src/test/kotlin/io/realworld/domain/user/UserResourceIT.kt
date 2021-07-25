@@ -30,7 +30,7 @@ internal class UserResourceIT {
     lateinit var objectMapper: ObjectMapper
 
     @Test
-    fun register() {
+    fun `Given a new user, when a registration request is made, then response should be created`() {
         val newUser = UserFactory.create()
         val userRegistrationReq = newUser.run {
             UserRegistrationRequest(username, email, password)
@@ -53,7 +53,7 @@ internal class UserResourceIT {
     }
 
     @Test
-    fun registerInvalidPayload() {
+    fun `Given a invalid registration request, when a request is made, then response should be bad request`() {
         val invalidEntity = UserFactory.create(username = "$^%@&", email = "@@@@")
 
         given()
@@ -69,7 +69,7 @@ internal class UserResourceIT {
     }
 
     @Test
-    fun login() {
+    fun `Given a valid login details, when a login request is made, then response should be ok with correct user payload`() {
         val requestedUser = UserFactory.create()
         val userLoginReq = UserLoginRequest(requestedUser.email, requestedUser.password)
 
@@ -99,8 +99,7 @@ internal class UserResourceIT {
 
     @Test
     @TestSecurity(user = "loggedInUser", roles = [USER])
-    // @JwtSecurity(claims = [Claim(key = "email", value = "loggedInUser@gmail.com")])
-    fun currentLoggedInUser() {
+    fun `Given an already logged in user, when a get users request is made, then response should return current logged in user details`() {
         val loggedInUser = UserFactory.create(username = "loggedInUser")
 
         `when`(repository.findById(loggedInUser.username))
@@ -126,7 +125,7 @@ internal class UserResourceIT {
 
     @Test
     @TestSecurity(user = "loggedInUser", roles = [USER])
-    fun updateLoggedInUser() {
+    fun `Given logged in user, when a valid update request is made, then response should return updated user`() {
         val loggedInUser = UserFactory.create(username = "loggedInUser")
         val userUpdateReq = loggedInUser.run {
             UserUpdateRequest("newUsername", null, "newPassword", "newBio", "")
