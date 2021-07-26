@@ -6,10 +6,10 @@ import io.quarkus.runtime.annotations.RegisterForReflection
 @RegisterForReflection
 data class ArticlesResponse(
     @field:JsonProperty("articles")
-    val articles: List<ArticleResponse> = emptyList(),
+    val articles: List<ArticleResponse>,
 
     @field:JsonProperty("articlesCount")
-    var articlesCount: Int = 0,
+    val articlesCount: Int,
 ) {
     companion object {
         @JvmStatic

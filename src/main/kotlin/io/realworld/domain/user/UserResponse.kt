@@ -8,19 +8,19 @@ import io.quarkus.runtime.annotations.RegisterForReflection
 @RegisterForReflection
 data class UserResponse(
     @field:JsonProperty("username")
-    var username: String = "",
+    val username: String,
 
     @field:JsonProperty("email")
-    var email: String = "",
+    val email: String,
 
     @field:JsonProperty("token")
-    var token: String = "",
+    val token: String,
 
     @field:JsonProperty("bio")
-    var bio: String = "",
+    val bio: String,
 
     @field:JsonProperty("image")
-    var image: String = "",
+    val image: String,
 ) {
     companion object {
         @JvmStatic

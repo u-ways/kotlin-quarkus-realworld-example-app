@@ -9,22 +9,22 @@ import io.realworld.domain.user.User
 @RegisterForReflection
 data class ProfileResponse(
     @field:JsonProperty("username")
-    var username: String = "",
+    val username: String,
 
     @field:JsonProperty("bio")
-    var bio: String = "",
+    val bio: String,
 
     @field:JsonProperty("image")
-    var image: String = "",
+    val image: String,
 
     @field:JsonProperty("following")
-    var following: Boolean = false,
+    val following: Boolean,
 ) {
     companion object {
         @JvmStatic
-        fun build(user: User, loggedInUser: User?): ProfileResponse = build(
+        fun build(user: User, loggedInUser: User): ProfileResponse = build(
             user = user,
-            isFollowing = loggedInUser?.follows?.firstOrNull { it == user } != null
+            isFollowing = loggedInUser.follows.firstOrNull { it == user } != null
         )
 
         @JvmStatic

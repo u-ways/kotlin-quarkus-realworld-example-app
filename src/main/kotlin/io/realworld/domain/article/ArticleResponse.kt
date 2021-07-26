@@ -8,42 +8,41 @@ import io.quarkus.runtime.annotations.RegisterForReflection
 import io.realworld.domain.profile.ProfileResponse
 import io.realworld.domain.tag.TagsResponse
 import java.time.Instant
-import java.time.Instant.now
 
 @JsonRootName("article")
 @RegisterForReflection
 data class ArticleResponse(
     @field:JsonProperty("slug")
-    var slug: String = "",
+    val slug: String,
 
     @field:JsonProperty("title")
-    var title: String = "",
+    val title: String,
 
     @field:JsonProperty("description")
-    var description: String = "",
+    val description: String,
 
     @field:JsonProperty("body")
-    var body: String = "",
+    val body: String,
 
     @field:JsonProperty("tagList")
-    var tagList: TagsResponse = TagsResponse(),
+    val tagList: TagsResponse,
 
     @field:JsonProperty("createdAt")
     @field:JsonFormat(shape = STRING) // FIXME: pattern is failing to pass tests "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
-    var createdAt: Instant = now(),
+    val createdAt: Instant,
 
     @field:JsonProperty("updatedAt")
     @field:JsonFormat(shape = STRING) // FIXME: pattern is failing to pass tests "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
-    var updatedAt: Instant = now(),
+    val updatedAt: Instant,
 
     @field:JsonProperty("favorited")
-    var favorited: Boolean = false,
+    val favorited: Boolean,
 
     @field:JsonProperty("favoritesCount")
-    var favoritesCount: Long = 0,
+    val favoritesCount: Long,
 
     @field:JsonProperty("author")
-    var author: ProfileResponse = ProfileResponse(),
+    val author: ProfileResponse,
 ) {
     companion object {
         @JvmStatic
