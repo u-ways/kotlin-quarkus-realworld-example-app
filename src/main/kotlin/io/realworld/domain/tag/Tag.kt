@@ -11,7 +11,7 @@ import javax.validation.constraints.Size
 open class Tag(
     @Id
     @field:Size(min = 0, max = 31)
-    var name: String = "",
+    open var name: String = "",
 ) {
     override fun toString(): String = "Tag($name)"
 

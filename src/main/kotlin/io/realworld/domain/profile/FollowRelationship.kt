@@ -10,7 +10,7 @@ import javax.persistence.Entity
 @RegisterForReflection
 open class FollowRelationship(
     @EmbeddedId
-    var id: FollowRelationshipKey = FollowRelationshipKey("", ""),
+    open var id: FollowRelationshipKey = FollowRelationshipKey("", ""),
 ) : PanacheEntityBase {
     override fun toString(): String = "FollowRelationship(${id.userId}, ${id.followingId})"
 

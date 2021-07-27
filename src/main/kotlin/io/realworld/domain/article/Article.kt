@@ -21,34 +21,34 @@ import javax.validation.constraints.Size
 @Entity(name = ARTICLE_TABLE)
 @RegisterForReflection
 open class Article(
-    @field:Id
-    @field:Column(columnDefinition = "uuid")
-    @field:GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    var slug: UUID = randomUUID(),
+    @Id
+    @Column(columnDefinition = "uuid")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    open var slug: UUID = randomUUID(),
 
     @field:Size(min = 5, max = 127)
     @field:NotBlank(message = TITLE_MUST_NOT_BE_BLANK)
-    var title: String = "",
+    open var title: String = "",
 
     @field:Size(min = 0, max = 255)
-    var description: String = "",
+    open var description: String = "",
 
     @field:Size(min = 0, max = 4095)
-    var body: String = "",
+    open var body: String = "",
 
     @field:Size(min = 0, max = 5)
-    @field:ManyToMany(fetch = EAGER, cascade = [PERSIST])
-    @field:JoinTable(name = TAG_RELATIONSHIP)
-    var tagList: MutableList<Tag> = mutableListOf(),
+    @ManyToMany(fetch = EAGER, cascade = [PERSIST])
+    @JoinTable(name = TAG_RELATIONSHIP)
+    open var tagList: MutableList<Tag> = mutableListOf(),
 
     @field:PastOrPresent
-    var createdAt: Instant = now(),
+    open var createdAt: Instant = now(),
 
     @field:PastOrPresent
-    var updatedAt: Instant = now(),
+    open var updatedAt: Instant = now(),
 
-    @field:ManyToOne
-    var author: User = User(),
+    @ManyToOne
+    open var author: User = User(),
 ) {
     override fun toString(): String =
         "Article($slug, $title, ${description.take(20)}, ${body.take(20)}, $createdAt, $updatedAt, ${author.username})"

@@ -11,10 +11,10 @@ import javax.persistence.Embeddable
 @RegisterForReflection
 open class FavoriteRelationshipKey(
     @Column
-    var articleId: UUID = randomUUID(),
+    open var articleId: UUID = randomUUID(),
 
     @Column
-    var favoriteById: String = "",
+    open var favoriteById: String = "",
 ) : Serializable {
     override fun toString(): String = "FavoriteRelationshipKey($articleId, $favoriteById)"
 

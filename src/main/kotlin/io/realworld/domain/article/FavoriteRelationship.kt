@@ -11,7 +11,7 @@ import javax.persistence.Entity
 @RegisterForReflection
 open class FavoriteRelationship(
     @EmbeddedId
-    var id: FavoriteRelationshipKey = FavoriteRelationshipKey(randomUUID(), ""),
+    open var id: FavoriteRelationshipKey = FavoriteRelationshipKey(randomUUID(), ""),
 ) : PanacheEntityBase {
     override fun toString(): String = "FavoriteRelationshipKey(${id.articleId}, ${id.favoriteById})"
 

@@ -16,31 +16,31 @@ import javax.validation.constraints.Size
 @Entity(name = USER_TABLE)
 @RegisterForReflection
 open class User(
-    @field:Id
+    @Id
     @field:Pattern(regexp = ALPHANUMERICAL, message = USERNAME_MUST_MATCH_PATTERN)
-    var username: String = "",
+    open var username: String = "",
 
     @field:Email
     @field:NotBlank(message = EMAIL_MUST_BE_NOT_BLANK)
-    @field:Column(unique = true)
-    var email: String = "",
+    @Column(unique = true)
+    open var email: String = "",
 
     @field:NotBlank(message = PASSWORD_MUST_BE_NOT_BLANK)
-    var password: String = "",
+    open var password: String = "",
 
     @field:Size(min = 0, max = 255)
-    var bio: String = "",
+    open var bio: String = "",
 
     @field:Size(min = 0, max = 2097152) // max = 1920 x 1080-pixel resolution
-    var image: String = "",
+    open var image: String = "",
 
-    @field:ManyToMany
-    @field:JoinTable(
+    @ManyToMany
+    @JoinTable(
         name = FOLLOW_RELATIONSHIP,
         joinColumns = [JoinColumn(name = "userId", referencedColumnName = "username")],
         inverseJoinColumns = [JoinColumn(name = "followingId", referencedColumnName = "username")]
     )
-    var follows: MutableList<User> = mutableListOf(),
+    open var follows: MutableList<User> = mutableListOf(),
 ) {
     override fun toString(): String = "User($username, $email, ${bio.take(20)}..., $image)"
 
