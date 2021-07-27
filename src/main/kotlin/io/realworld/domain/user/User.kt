@@ -15,7 +15,7 @@ import javax.validation.constraints.Size
 
 @Entity(name = USER_TABLE)
 @RegisterForReflection
-data class User(
+open class User(
     @field:Id
     @field:Pattern(regexp = ALPHANUMERICAL, message = USERNAME_MUST_MATCH_PATTERN)
     var username: String = "",
@@ -44,12 +44,11 @@ data class User(
 ) {
     override fun toString(): String = "User($username, $email, ${bio.take(20)}..., $image)"
 
-    override fun hashCode(): Int = username.hashCode()
+    final override fun hashCode(): Int = username.hashCode()
 
-    override fun equals(other: Any?): Boolean {
+    final override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-        other as User
+        if (other !is User) return false
         if (username != other.username) return false
         return true
     }

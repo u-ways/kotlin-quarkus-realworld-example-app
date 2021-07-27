@@ -20,7 +20,7 @@ import javax.validation.constraints.Size
 
 @Entity(name = ARTICLE_TABLE)
 @RegisterForReflection
-data class Article(
+open class Article(
     @field:Id
     @field:Column(columnDefinition = "uuid")
     @field:GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
@@ -53,12 +53,11 @@ data class Article(
     override fun toString(): String =
         "Article($slug, $title, ${description.take(20)}, ${body.take(20)}, $createdAt, $updatedAt, ${author.username})"
 
-    override fun hashCode(): Int = slug.hashCode()
+    final override fun hashCode(): Int = slug.hashCode()
 
-    override fun equals(other: Any?): Boolean {
+    final override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-        other as Article
+        if (other !is Article) return false
         if (slug != other.slug) return false
         return true
     }

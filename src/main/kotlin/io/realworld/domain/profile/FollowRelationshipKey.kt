@@ -7,7 +7,7 @@ import javax.persistence.Embeddable
 
 @Embeddable
 @RegisterForReflection
-data class FollowRelationshipKey(
+open class FollowRelationshipKey(
     @Column
     var userId: String = "",
 
@@ -15,4 +15,14 @@ data class FollowRelationshipKey(
     var followingId: String = "",
 ) : Serializable {
     override fun toString(): String = "FollowRelationshipKey($userId, $followingId)"
+
+    final override fun hashCode(): Int = userId.hashCode() + followingId.hashCode()
+
+    final override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is FollowRelationshipKey) return false
+        if (userId != other.userId) return false
+        if (followingId != other.followingId) return false
+        return true
+    }
 }

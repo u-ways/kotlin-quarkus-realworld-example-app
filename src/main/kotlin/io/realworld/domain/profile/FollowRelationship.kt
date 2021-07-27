@@ -8,9 +8,18 @@ import javax.persistence.Entity
 
 @Entity(name = FOLLOW_RELATIONSHIP)
 @RegisterForReflection
-data class FollowRelationship(
+open class FollowRelationship(
     @EmbeddedId
     var id: FollowRelationshipKey = FollowRelationshipKey("", ""),
 ) : PanacheEntityBase {
     override fun toString(): String = "FollowRelationship(${id.userId}, ${id.followingId})"
+
+    final override fun hashCode(): Int = id.hashCode()
+
+    final override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is FollowRelationship) return false
+        if (id != other.id) return false
+        return true
+    }
 }

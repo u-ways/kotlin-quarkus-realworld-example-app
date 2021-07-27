@@ -9,9 +9,18 @@ import javax.persistence.Entity
 
 @Entity(name = FAVORITED_RELATIONSHIP)
 @RegisterForReflection
-data class FavoriteRelationship(
+open class FavoriteRelationship(
     @EmbeddedId
     var id: FavoriteRelationshipKey = FavoriteRelationshipKey(randomUUID(), ""),
 ) : PanacheEntityBase {
     override fun toString(): String = "FavoriteRelationshipKey(${id.articleId}, ${id.favoriteById})"
+
+    final override fun hashCode(): Int = id.hashCode()
+
+    final override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is FavoriteRelationship) return false
+        if (id != other.id) return false
+        return true
+    }
 }

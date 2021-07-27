@@ -9,7 +9,7 @@ import javax.persistence.Embeddable
 
 @Embeddable
 @RegisterForReflection
-data class FavoriteRelationshipKey(
+open class FavoriteRelationshipKey(
     @Column
     var articleId: UUID = randomUUID(),
 
@@ -17,4 +17,14 @@ data class FavoriteRelationshipKey(
     var favoriteById: String = "",
 ) : Serializable {
     override fun toString(): String = "FavoriteRelationshipKey($articleId, $favoriteById)"
+
+    final override fun hashCode(): Int = articleId.hashCode() + favoriteById.hashCode()
+
+    final override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is FavoriteRelationshipKey) return false
+        if (articleId != other.articleId) return false
+        if (favoriteById != other.favoriteById) return false
+        return true
+    }
 }
