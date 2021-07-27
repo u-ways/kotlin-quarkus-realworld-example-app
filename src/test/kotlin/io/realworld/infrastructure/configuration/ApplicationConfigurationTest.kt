@@ -17,7 +17,7 @@ internal class ApplicationConfigurationTest {
     companion object {
         @JsonRootName("rootName")
         class DAO {
-            @field:JsonProperty("fieldOne")
+            @JsonProperty("fieldOne")
             val fieldOne: String = "fieldOne"
         }
     }

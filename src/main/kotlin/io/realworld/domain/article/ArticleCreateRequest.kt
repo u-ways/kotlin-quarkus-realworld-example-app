@@ -11,19 +11,19 @@ import java.util.UUID.randomUUID
 @JsonRootName("article")
 @RegisterForReflection
 data class ArticleCreateRequest(
-    @field:JsonProperty("title")
+    @JsonProperty("title")
     val title: String,
 
-    @field:JsonProperty("description")
+    @JsonProperty("description")
     val description: String,
 
-    @field:JsonProperty("body")
+    @JsonProperty("body")
     val body: String,
 
-    @field:JsonProperty("tagList")
+    @JsonProperty("tagList")
     val tagList: List<String>? = null,
 ) {
-    fun toArticle(authorId: String, articleId: UUID = randomUUID()) = Article(
+    fun toEntity(authorId: String, articleId: UUID = randomUUID()) = Article(
         slug = articleId,
         title = title,
         description = description,

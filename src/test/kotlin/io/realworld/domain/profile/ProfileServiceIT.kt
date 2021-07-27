@@ -11,13 +11,11 @@ import javax.transaction.Transactional
 @QuarkusTest
 internal class ProfileServiceIT {
     @Inject
-    private lateinit var service: ProfileService
-
+    lateinit var service: ProfileService
     @Inject
-    private lateinit var followRelationshipRepository: FollowRelationshipRepository
-
+    lateinit var followRelationshipRepository: FollowRelationshipRepository
     @Inject
-    private lateinit var userRepository: UserRepository
+    lateinit var userRepository: UserRepository
 
     @Test
     @Transactional

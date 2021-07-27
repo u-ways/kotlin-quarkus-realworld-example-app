@@ -20,7 +20,7 @@ import javax.ws.rs.core.Response.Status.OK
 @TestHTTPEndpoint(ProfileResource::class)
 internal class ProfileResourceIT {
     @InjectMock
-    private lateinit var service: ProfileService
+    lateinit var service: ProfileService
 
     @Test
     @TestSecurity(user = "loggedInUser", roles = [USER])

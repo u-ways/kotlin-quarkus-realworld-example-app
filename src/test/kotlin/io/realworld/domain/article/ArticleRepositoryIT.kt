@@ -18,13 +18,11 @@ import javax.transaction.Transactional
 @QuarkusTest
 internal class ArticleRepositoryIT {
     @Inject
-    private lateinit var repository: ArticleRepository
-
+    lateinit var repository: ArticleRepository
     @Inject
-    private lateinit var userRepository: UserRepository
-
+    lateinit var userRepository: UserRepository
     @Inject
-    private lateinit var profileService: ProfileService
+    lateinit var profileService: ProfileService
 
     @Test
     @Transactional

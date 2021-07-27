@@ -7,6 +7,7 @@ import io.quarkus.test.junit.mockito.InjectMock
 import io.quarkus.test.security.TestSecurity
 import io.realworld.domain.tag.Tag
 import io.realworld.infrastructure.security.Role.USER
+import io.realworld.infrastructure.web.Routes.ARTICLES_PATH
 import io.realworld.support.factory.ArticleFactory
 import io.realworld.support.factory.UserFactory
 import io.restassured.RestAssured.given
@@ -25,10 +26,8 @@ import javax.ws.rs.core.Response.Status.*
 @QuarkusTest
 @TestHTTPEndpoint(ArticleResource::class)
 internal class ArticleResourceIT {
-
     @InjectMock
-    private lateinit var service: ArticleService
-
+    lateinit var service: ArticleService
     @Inject
     lateinit var objectMapper: ObjectMapper
 
@@ -110,7 +109,7 @@ internal class ArticleResourceIT {
         val newArticleRequest = ArticleFactory.create().run {
             ArticleCreateRequest(title, description, body)
         }
-        val newArticle = newArticleRequest.toArticle(loggedInUser.username)
+        val newArticle = newArticleRequest.toEntity(loggedInUser.username)
 
         `when`(service.create(newArticleRequest, loggedInUser.username)).thenReturn(
             ArticleResponse.build(newArticle)
@@ -125,7 +124,7 @@ internal class ArticleResourceIT {
             .then()
             .body("article.size()", equalTo(10))
             .body("article.slug", equalTo(newArticle.slug.toString()))
-            .header(LOCATION, CoreMatchers.containsString("/articles/${newArticle.slug}"))
+            .header(LOCATION, CoreMatchers.containsString("$ARTICLES_PATH/${newArticle.slug}"))
             .statusCode(CREATED.statusCode)
 
         verify(service).create(newArticleRequest, loggedInUser.username)

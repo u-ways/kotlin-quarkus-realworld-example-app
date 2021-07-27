@@ -1,6 +1,7 @@
 package io.realworld.domain.profile
 
 import io.realworld.infrastructure.security.Role.USER
+import io.realworld.infrastructure.web.Routes.PROFILES_PATH
 import javax.annotation.security.PermitAll
 import javax.annotation.security.RolesAllowed
 import javax.enterprise.inject.Default
@@ -13,10 +14,10 @@ import javax.ws.rs.core.Response.Status.OK
 import javax.ws.rs.core.Response.ok
 import javax.ws.rs.core.SecurityContext
 
-@Path("/profiles")
+@Path(PROFILES_PATH)
 class ProfileResource {
     @Inject
-    @field:Default
+    @Default
     lateinit var service: ProfileService
 
     @GET

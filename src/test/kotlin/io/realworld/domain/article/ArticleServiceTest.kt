@@ -19,13 +19,11 @@ import java.util.*
 @QuarkusTest
 internal class ArticleServiceTest {
     @InjectMock
-    private lateinit var repository: ArticleRepository
-
+    lateinit var repository: ArticleRepository
     @InjectMock
-    private lateinit var favoriteRelationshipRepository: FavoriteRelationshipRepository
-
+    lateinit var favoriteRelationshipRepository: FavoriteRelationshipRepository
     @InjectMock
-    private lateinit var followRelationshipRepository: FollowRelationshipRepository
+    lateinit var followRelationshipRepository: FollowRelationshipRepository
 
     private lateinit var service: ArticleService
 
@@ -70,7 +68,7 @@ internal class ArticleServiceTest {
             ArticleCreateRequest(title, description, body, tagList.map { it.name })
         }
 
-        val expectedEntity = articleRequest.toArticle(loggedInUser.username)
+        val expectedEntity = articleRequest.toEntity(loggedInUser.username)
         val expectedResponse = ArticleResponse.build(expectedEntity)
 
         val actual = service.create(articleRequest, loggedInUser.username)
@@ -104,7 +102,7 @@ internal class ArticleServiceTest {
             ArticleUpdateRequest(title, description)
         }
 
-        val expectedUpdatedEntity = updateRequest.applyChanges(existingArticle)
+        val expectedUpdatedEntity = updateRequest.applyChangesTo(existingArticle)
         val expectedResponse = ArticleResponse.build(expectedUpdatedEntity)
 
         val actual = service.update(existingArticle.slug, updateRequest)

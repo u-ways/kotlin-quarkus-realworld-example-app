@@ -8,25 +8,19 @@ import io.realworld.domain.user.User
 @JsonRootName("profile")
 @RegisterForReflection
 data class ProfileResponse(
-    @field:JsonProperty("username")
+    @JsonProperty("username")
     val username: String,
 
-    @field:JsonProperty("bio")
+    @JsonProperty("bio")
     val bio: String,
 
-    @field:JsonProperty("image")
+    @JsonProperty("image")
     val image: String,
 
-    @field:JsonProperty("following")
+    @JsonProperty("following")
     val following: Boolean,
 ) {
     companion object {
-        @JvmStatic
-        fun build(user: User, loggedInUser: User): ProfileResponse = build(
-            user = user,
-            isFollowing = loggedInUser.follows.firstOrNull { it == user } != null
-        )
-
         @JvmStatic
         fun build(user: User, isFollowing: Boolean): ProfileResponse = ProfileResponse(
             username = user.username,

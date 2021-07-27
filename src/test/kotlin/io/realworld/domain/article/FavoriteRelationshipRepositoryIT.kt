@@ -11,15 +11,12 @@ import javax.transaction.Transactional
 
 @QuarkusTest
 internal class FavoriteRelationshipRepositoryIT {
-
     @Inject
-    private lateinit var articleRepository: ArticleRepository
-
+    lateinit var articleRepository: ArticleRepository
     @Inject
-    private lateinit var userRepository: UserRepository
-
+    lateinit var userRepository: UserRepository
     @Inject
-    private lateinit var favoriteRelationshipRepository: FavoriteRelationshipRepository
+    lateinit var favoriteRelationshipRepository: FavoriteRelationshipRepository
 
     @Test
     @Transactional

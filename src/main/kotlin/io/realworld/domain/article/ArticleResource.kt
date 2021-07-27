@@ -5,11 +5,11 @@ import io.realworld.domain.exception.InvalidAuthorException
 import io.realworld.infrastructure.security.Role.ADMIN
 import io.realworld.infrastructure.security.Role.USER
 import io.realworld.infrastructure.web.NoJsonRootWrap
+import io.realworld.infrastructure.web.Routes.ARTICLES_PATH
 import io.realworld.utils.ValidationMessages.Companion.REQUEST_BODY_MUST_NOT_BE_NULL
 import java.util.*
 import javax.annotation.security.PermitAll
 import javax.annotation.security.RolesAllowed
-import javax.enterprise.inject.Default
 import javax.inject.Inject
 import javax.transaction.Transactional
 import javax.validation.Valid
@@ -23,12 +23,10 @@ import javax.ws.rs.core.Response.ok
 import javax.ws.rs.core.SecurityContext
 import javax.ws.rs.core.UriBuilder
 
-@Path("/articles")
+@Path(ARTICLES_PATH)
 class ArticleResource {
     @Inject
-    @field: Default
     lateinit var service: ArticleService
-
     @Inject
     @NoJsonRootWrap
     lateinit var objectMapper: ObjectMapper

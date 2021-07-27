@@ -3,19 +3,13 @@ package io.realworld.domain.profile
 import io.realworld.domain.exception.ProfileNotFoundException
 import io.realworld.domain.user.UserRepository
 import javax.enterprise.context.ApplicationScoped
-import javax.enterprise.inject.Default
 import javax.inject.Inject
 import javax.transaction.Transactional
 
 @ApplicationScoped
 class ProfileService(
-    @Inject
-    @field:Default
-    private val userRepository: UserRepository,
-
-    @Inject
-    @field:Default
-    private val followRelationshipRepository: FollowRelationshipRepository
+    @Inject val userRepository: UserRepository,
+    @Inject val followRelationshipRepository: FollowRelationshipRepository
 ) {
     fun findProfile(subjectedUserId: String, loggedInUserId: String? = null): ProfileResponse =
         userRepository.findById(subjectedUserId)?.run {
@@ -28,8 +22,8 @@ class ProfileService(
         } ?: throw ProfileNotFoundException()
 
     @Transactional
-    fun follow(userToFollowId: String, loggedInUserId: String): Unit = run {
-        check(userRepository.exists(userToFollowId))
+    fun follow(userToFollowId: String, loggedInUserId: String) = run {
+        check(userRepository.existsUsername(userToFollowId))
         followRelationshipRepository.persist(
             FollowRelationship(
                 id = FollowRelationshipKey(
@@ -42,7 +36,7 @@ class ProfileService(
 
     @Transactional
     fun unfollow(userToUnfollowId: String, loggedInUserId: String): Boolean = run {
-        check(userRepository.exists(userToUnfollowId))
+        check(userRepository.existsUsername(userToUnfollowId))
         followRelationshipRepository.deleteById(
             FollowRelationshipKey(
                 userId = loggedInUserId,

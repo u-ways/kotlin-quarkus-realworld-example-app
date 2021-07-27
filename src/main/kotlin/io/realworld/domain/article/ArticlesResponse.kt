@@ -5,10 +5,10 @@ import io.quarkus.runtime.annotations.RegisterForReflection
 
 @RegisterForReflection
 data class ArticlesResponse(
-    @field:JsonProperty("articles")
+    @JsonProperty("articles")
     val articles: List<ArticleResponse>,
 
-    @field:JsonProperty("articlesCount")
+    @JsonProperty("articlesCount")
     val articlesCount: Int,
 ) {
     companion object {

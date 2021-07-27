@@ -13,10 +13,9 @@ import org.mockito.Mockito.`when`
 @QuarkusTest
 internal class ProfileServiceTest {
     @InjectMock
-    private lateinit var userRepository: UserRepository
-
+    lateinit var userRepository: UserRepository
     @InjectMock
-    private lateinit var followRelationshipRepository: FollowRelationshipRepository
+    lateinit var followRelationshipRepository: FollowRelationshipRepository
 
     private lateinit var service: ProfileService
 
@@ -41,7 +40,7 @@ internal class ProfileServiceTest {
     fun `Given a logged-in user, when a follow is requested to a non-existing user, repository should throw IllegalStateException`() {
         val loggedInUser = UserFactory.create()
 
-        `when`(userRepository.exists("INVALID_ID")).thenReturn(false)
+        `when`(userRepository.existsUsername("INVALID_ID")).thenReturn(false)
 
         assertThrows<IllegalStateException> {
             service.follow("INVALID_ID", loggedInUser.username)
@@ -52,7 +51,7 @@ internal class ProfileServiceTest {
     fun `Given a logged-in user, when an unfollow is requested to a non-existing user, repository should throw IllegalStateException`() {
         val loggedInUser = UserFactory.create()
 
-        `when`(userRepository.exists("INVALID_ID")).thenReturn(false)
+        `when`(userRepository.existsUsername("INVALID_ID")).thenReturn(false)
 
         assertThrows<IllegalStateException> {
             service.unfollow("INVALID_ID", loggedInUser.username)

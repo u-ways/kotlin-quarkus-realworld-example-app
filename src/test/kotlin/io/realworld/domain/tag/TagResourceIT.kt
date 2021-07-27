@@ -23,7 +23,6 @@ import javax.ws.rs.core.Response.Status.OK
 internal class TagResourceIT {
     @InjectMock
     lateinit var repository: TagRepository
-
     @Inject
     lateinit var objectMapper: ObjectMapper
 

@@ -12,36 +12,36 @@ import java.time.Instant
 @JsonRootName("article")
 @RegisterForReflection
 data class ArticleResponse(
-    @field:JsonProperty("slug")
+    @JsonProperty("slug")
     val slug: String,
 
-    @field:JsonProperty("title")
+    @JsonProperty("title")
     val title: String,
 
-    @field:JsonProperty("description")
+    @JsonProperty("description")
     val description: String,
 
-    @field:JsonProperty("body")
+    @JsonProperty("body")
     val body: String,
 
-    @field:JsonProperty("tagList")
+    @JsonProperty("tagList")
     val tagList: TagsResponse,
 
-    @field:JsonProperty("createdAt")
-    @field:JsonFormat(shape = STRING) // FIXME: pattern is failing to pass tests "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+    @JsonProperty("createdAt")
+    @JsonFormat(shape = STRING) // FIXME: pattern is failing to pass tests "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
     val createdAt: Instant,
 
-    @field:JsonProperty("updatedAt")
-    @field:JsonFormat(shape = STRING) // FIXME: pattern is failing to pass tests "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+    @JsonProperty("updatedAt")
+    @JsonFormat(shape = STRING) // FIXME: pattern is failing to pass tests "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
     val updatedAt: Instant,
 
-    @field:JsonProperty("favorited")
+    @JsonProperty("favorited")
     val favorited: Boolean,
 
-    @field:JsonProperty("favoritesCount")
+    @JsonProperty("favoritesCount")
     val favoritesCount: Long,
 
-    @field:JsonProperty("author")
+    @JsonProperty("author")
     val author: ProfileResponse,
 ) {
     companion object {

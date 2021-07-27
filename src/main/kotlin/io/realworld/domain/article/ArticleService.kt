@@ -4,23 +4,14 @@ import io.realworld.domain.exception.ArticleNotFoundException
 import io.realworld.domain.profile.FollowRelationshipRepository
 import java.util.*
 import javax.enterprise.context.ApplicationScoped
-import javax.enterprise.inject.Default
 import javax.inject.Inject
 import javax.transaction.Transactional
 
 @ApplicationScoped
 class ArticleService(
-    @Inject
-    @field:Default
-    private val articleRepository: ArticleRepository,
-
-    @Inject
-    @field:Default
-    private val favoriteRelationshipRepository: FavoriteRelationshipRepository,
-
-    @Inject
-    @field:Default
-    private val followRelationshipRepository: FollowRelationshipRepository,
+    @Inject val articleRepository: ArticleRepository,
+    @Inject val favoriteRelationshipRepository: FavoriteRelationshipRepository,
+    @Inject val followRelationshipRepository: FollowRelationshipRepository,
 ) {
     fun get(
         articleId: UUID,
@@ -43,7 +34,7 @@ class ArticleService(
         createRequest: ArticleCreateRequest,
         loggedInUserId: String,
     ): ArticleResponse = createRequest
-        .toArticle(loggedInUserId)
+        .toEntity(loggedInUserId)
         .run {
             articleRepository.persist(this)
             ArticleResponse.build(this)
@@ -52,7 +43,7 @@ class ArticleService(
     fun update(
         articleId: UUID,
         updateRequest: ArticleUpdateRequest
-    ): ArticleResponse = updateRequest.applyChanges(
+    ): ArticleResponse = updateRequest.applyChangesTo(
         existingArticle = articleRepository
             .findById(articleId) ?: throw ArticleNotFoundException()
     ).run {

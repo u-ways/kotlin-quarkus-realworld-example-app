@@ -1,7 +1,7 @@
 package io.realworld.domain.tag
 
+import io.realworld.infrastructure.web.Routes.TAGS_PATH
 import io.realworld.utils.ValidationMessages.Companion.REQUEST_BODY_MUST_NOT_BE_NULL
-import javax.enterprise.inject.Default
 import javax.inject.Inject
 import javax.transaction.Transactional
 import javax.validation.Valid
@@ -15,10 +15,9 @@ import javax.ws.rs.core.Response.created
 import javax.ws.rs.core.Response.ok
 import javax.ws.rs.core.UriBuilder.fromResource
 
-@Path("/tags")
+@Path(TAGS_PATH)
 class TagResource {
     @Inject
-    @field: Default
     lateinit var repository: TagRepository
 
     @GET
