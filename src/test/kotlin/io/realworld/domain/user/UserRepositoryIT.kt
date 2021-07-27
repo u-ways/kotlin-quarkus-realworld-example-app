@@ -1,7 +1,8 @@
 package io.realworld.domain.user
 
 import io.quarkus.test.junit.QuarkusTest
-import io.realworld.infrastructure.security.BCryptHashProvider
+import io.realworld.domain.article.ArticleRepository
+import io.realworld.domain.comment.CommentRepository
 import io.realworld.support.factory.UserFactory
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
@@ -11,41 +12,40 @@ import javax.transaction.Transactional
 @QuarkusTest
 internal class UserRepositoryIT {
     @Inject
-    private lateinit var repository: UserRepository
-
+    lateinit var repository: UserRepository
     @Inject
-    private lateinit var hashProvider: BCryptHashProvider
+    lateinit var articleRepository: ArticleRepository
+    @Inject
+    lateinit var commentRepository: CommentRepository
 
     @Test
     @Transactional
-    fun `Given a valid user registration details, when registered, then correct entity should be persisted`() {
-        val newUser = UserFactory.create().run {
-            UserRegistrationRequest(username, email, password)
-        }
+    fun `Given an existing user, when a query by user's email is made, then correct entity should returned`() {
+        val existingUser = UserFactory.create().apply(repository::persist)
 
-        repository.register(newUser)
-
-        val result = repository.findById(newUser.username)
+        val result = repository.findByEmail(existingUser.email)
 
         checkNotNull(result)
 
-        assertEquals(newUser.username, result.username)
-        assertEquals(newUser.email, result.email)
+        assertEquals(existingUser.username, result.username)
+        assertEquals(existingUser.email, result.email)
     }
 
     @Test
     @Transactional
-    fun `Given a valid user registration details, when registered, then password should be hashed correctly`() {
-        val newUser = UserFactory.create().run {
-            UserRegistrationRequest(username, email, password)
-        }
+    fun `Given an existing user, when an exists query is made by user's username, then correct result should be returned`() {
+        val existingUser = UserFactory.create().apply(repository::persist)
 
-        repository.register(newUser)
+        assertFalse(repository.existsUsername("INVALID_USERNAME"))
+        assertTrue(repository.existsUsername(existingUser.username))
+    }
 
-        val result = repository.findByEmail(newUser.email)
+    @Test
+    @Transactional
+    fun `Given an existing user, when an exists query is made by user's email, then correct result should be returned`() {
+        val existingUser = UserFactory.create().apply(repository::persist)
 
-        checkNotNull(result)
-        assertNotEquals(newUser.password, result.password)
-        assertTrue(hashProvider.verify(newUser.password, result.password))
+        assertFalse(repository.existsEmail("INVALID_EMAIL"))
+        assertTrue(repository.existsEmail(existingUser.email))
     }
 }

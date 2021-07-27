@@ -5,13 +5,14 @@ import io.quarkus.test.common.http.TestHTTPEndpoint
 import io.quarkus.test.junit.QuarkusTest
 import io.quarkus.test.junit.mockito.InjectMock
 import io.quarkus.test.security.TestSecurity
-import io.realworld.infrastructure.security.BCryptHashProvider
 import io.realworld.infrastructure.security.Role.USER
+import io.realworld.infrastructure.web.Routes.USERS_PATH
 import io.realworld.support.factory.UserFactory
 import io.restassured.RestAssured.given
 import org.hamcrest.CoreMatchers.*
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.*
+import org.mockito.kotlin.any
 import javax.inject.Inject
 import javax.ws.rs.core.HttpHeaders.LOCATION
 import javax.ws.rs.core.MediaType.APPLICATION_JSON
@@ -21,23 +22,21 @@ import javax.ws.rs.core.Response.Status.*
 @TestHTTPEndpoint(UserResource::class)
 internal class UserResourceIT {
     @InjectMock
-    lateinit var repository: UserRepository
-
-    @Inject
-    lateinit var hashProvider: BCryptHashProvider
-
+    lateinit var service: UserService
     @Inject
     lateinit var objectMapper: ObjectMapper
 
     @Test
     fun `Given a new user, when a registration request is made, then response should be created`() {
+        val token = "GENERATED_TOKEN"
         val newUser = UserFactory.create()
         val userRegistrationReq = newUser.run {
             UserRegistrationRequest(username, email, password)
         }
 
-        `when`(repository.register(userRegistrationReq))
-            .thenReturn(newUser)
+        `when`(service.register(userRegistrationReq)).thenReturn(
+            UserResponse.build(newUser, token)
+        )
 
         given()
             .accept(APPLICATION_JSON)
@@ -46,10 +45,10 @@ internal class UserResourceIT {
             .`when`()
             .post("/users")
             .then()
-            .header(LOCATION, containsString("/users/${newUser.username}"))
+            .header(LOCATION, containsString("$USERS_PATH/${newUser.username}"))
             .statusCode(CREATED.statusCode)
 
-        verify(repository).register(userRegistrationReq)
+        verify(service).register(userRegistrationReq)
     }
 
     @Test
@@ -65,16 +64,18 @@ internal class UserResourceIT {
             .then()
             .statusCode(BAD_REQUEST.statusCode)
 
-        verify(repository, never()).persist(invalidEntity)
+        verify(service, never()).register(any())
     }
 
     @Test
     fun `Given a valid login details, when a login request is made, then response should be ok with correct user payload`() {
-        val requestedUser = UserFactory.create()
-        val userLoginReq = UserLoginRequest(requestedUser.email, requestedUser.password)
+        val token = "GENERATED_TOKEN"
+        val requestedUser = UserFactory.create().run {
+            UserResponse(username, email, token, bio, image)
+        }
+        val userLoginReq = UserLoginRequest(requestedUser.email, token)
 
-        `when`(repository.findByEmail(requestedUser.email))
-            .thenReturn(requestedUser.copy(password = hashProvider.hash(requestedUser.password)))
+        `when`(service.login(userLoginReq)).thenReturn(requestedUser)
 
         given()
             .accept(APPLICATION_JSON)
@@ -94,16 +95,18 @@ internal class UserResourceIT {
             .contentType(APPLICATION_JSON)
             .statusCode(OK.statusCode)
 
-        verify(repository).findByEmail(requestedUser.email)
+        verify(service).login(userLoginReq)
     }
 
     @Test
     @TestSecurity(user = "loggedInUser", roles = [USER])
     fun `Given an already logged in user, when a get users request is made, then response should return current logged in user details`() {
-        val loggedInUser = UserFactory.create(username = "loggedInUser")
+        val token = "GENERATED_TOKEN"
+        val loggedInUser = UserFactory.create(username = "loggedInUser").run {
+            UserResponse(username, email, token, bio, image)
+        }
 
-        `when`(repository.findById(loggedInUser.username))
-            .thenReturn(loggedInUser)
+        `when`(service.get(loggedInUser.username)).thenReturn(loggedInUser)
 
         given()
             .accept(APPLICATION_JSON)
@@ -120,24 +123,26 @@ internal class UserResourceIT {
             .contentType(APPLICATION_JSON)
             .statusCode(OK.statusCode)
 
-        verify(repository).findById(loggedInUser.username)
+        verify(service).get(loggedInUser.username)
     }
 
     @Test
     @TestSecurity(user = "loggedInUser", roles = [USER])
     fun `Given logged in user, when a valid update request is made, then response should return updated user`() {
+        val token = "GENERATED_TOKEN"
         val loggedInUser = UserFactory.create(username = "loggedInUser")
         val userUpdateReq = loggedInUser.run {
-            UserUpdateRequest("newUsername", null, "newPassword", "newBio", "")
+            UserUpdateRequest("newUsername", null, null, "newBio", "")
         }
 
-        `when`(repository.update(loggedInUser.username, userUpdateReq))
+        `when`(service.update(loggedInUser.username, userUpdateReq))
             .thenReturn(
-                loggedInUser.copy(
+                UserResponse(
                     username = userUpdateReq.username!!,
-                    password = userUpdateReq.password!!,
+                    email = loggedInUser.email,
                     bio = userUpdateReq.bio!!,
-                    image = userUpdateReq.image!!
+                    image = userUpdateReq.image!!,
+                    token = token
                 )
             )
 
@@ -159,6 +164,6 @@ internal class UserResourceIT {
             .contentType(APPLICATION_JSON)
             .statusCode(OK.statusCode)
 
-        verify(repository).update(loggedInUser.username, userUpdateReq)
+        verify(service).update(loggedInUser.username, userUpdateReq)
     }
 }

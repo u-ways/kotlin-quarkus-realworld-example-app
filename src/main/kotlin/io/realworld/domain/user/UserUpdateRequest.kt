@@ -7,18 +7,26 @@ import io.quarkus.runtime.annotations.RegisterForReflection
 @JsonRootName("user")
 @RegisterForReflection
 data class UserUpdateRequest(
-    @field:JsonProperty("username")
+    @JsonProperty("username")
     val username: String? = null,
 
-    @field:JsonProperty("email")
+    @JsonProperty("email")
     val email: String? = null,
 
-    @field:JsonProperty("password")
+    @JsonProperty("password")
     val password: String? = null,
 
-    @field:JsonProperty("bio")
+    @JsonProperty("bio")
     val bio: String? = null,
 
-    @field:JsonProperty("image")
+    @JsonProperty("image")
     val image: String? = null,
-)
+) {
+    fun applyChangesTo(existingUser: User) = User(
+        username = username ?: existingUser.username,
+        email = email ?: existingUser.email,
+        password = password ?: existingUser.password,
+        bio = bio ?: existingUser.bio,
+        image = image ?: existingUser.image
+    )
+}

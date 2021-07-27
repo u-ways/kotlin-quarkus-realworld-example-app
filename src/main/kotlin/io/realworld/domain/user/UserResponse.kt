@@ -7,19 +7,19 @@ import io.quarkus.runtime.annotations.RegisterForReflection
 @JsonRootName("user")
 @RegisterForReflection
 data class UserResponse(
-    @field:JsonProperty("username")
+    @JsonProperty("username")
     val username: String,
 
-    @field:JsonProperty("email")
+    @JsonProperty("email")
     val email: String,
 
-    @field:JsonProperty("token")
+    @JsonProperty("token")
     val token: String,
 
-    @field:JsonProperty("bio")
+    @JsonProperty("bio")
     val bio: String,
 
-    @field:JsonProperty("image")
+    @JsonProperty("image")
     val image: String,
 ) {
     companion object {

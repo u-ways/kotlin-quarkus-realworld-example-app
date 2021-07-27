@@ -20,7 +20,7 @@ internal class UserIT {
      * See: https://docs.jboss.org/hibernate/stable/validator/reference/en-US/html_single/#_validating_constraints
      */
     @Inject
-    internal lateinit var validator: Validator
+    lateinit var validator: Validator
 
     @Test
     fun `Given username must not have whitespace or special characters`() {
