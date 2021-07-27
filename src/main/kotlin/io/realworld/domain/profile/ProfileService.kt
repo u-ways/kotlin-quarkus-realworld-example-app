@@ -3,13 +3,12 @@ package io.realworld.domain.profile
 import io.realworld.domain.exception.ProfileNotFoundException
 import io.realworld.domain.user.UserRepository
 import javax.enterprise.context.ApplicationScoped
-import javax.inject.Inject
 import javax.transaction.Transactional
 
 @ApplicationScoped
 class ProfileService(
-    @Inject val userRepository: UserRepository,
-    @Inject val followRelationshipRepository: FollowRelationshipRepository
+    private val userRepository: UserRepository,
+    private val followRelationshipRepository: FollowRelationshipRepository
 ) {
     fun findProfile(subjectedUserId: String, loggedInUserId: String? = null): ProfileResponse =
         userRepository.findById(subjectedUserId)?.run {

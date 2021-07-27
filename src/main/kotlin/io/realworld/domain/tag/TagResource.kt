@@ -2,7 +2,6 @@ package io.realworld.domain.tag
 
 import io.realworld.infrastructure.web.Routes.TAGS_PATH
 import io.realworld.utils.ValidationMessages.Companion.REQUEST_BODY_MUST_NOT_BE_NULL
-import javax.inject.Inject
 import javax.transaction.Transactional
 import javax.validation.Valid
 import javax.validation.constraints.NotNull
@@ -16,9 +15,9 @@ import javax.ws.rs.core.Response.ok
 import javax.ws.rs.core.UriBuilder.fromResource
 
 @Path(TAGS_PATH)
-class TagResource {
-    @Inject
-    lateinit var repository: TagRepository
+class TagResource(
+    private val repository: TagRepository
+) {
 
     @GET
     @Produces(APPLICATION_JSON)

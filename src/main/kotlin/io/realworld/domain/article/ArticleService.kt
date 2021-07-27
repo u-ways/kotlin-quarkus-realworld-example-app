@@ -4,14 +4,13 @@ import io.realworld.domain.exception.ArticleNotFoundException
 import io.realworld.domain.profile.FollowRelationshipRepository
 import java.util.*
 import javax.enterprise.context.ApplicationScoped
-import javax.inject.Inject
 import javax.transaction.Transactional
 
 @ApplicationScoped
 class ArticleService(
-    @Inject val articleRepository: ArticleRepository,
-    @Inject val favoriteRelationshipRepository: FavoriteRelationshipRepository,
-    @Inject val followRelationshipRepository: FollowRelationshipRepository,
+    private val articleRepository: ArticleRepository,
+    private val favoriteRelationshipRepository: FavoriteRelationshipRepository,
+    private val followRelationshipRepository: FollowRelationshipRepository,
 ) {
     fun get(
         articleId: UUID,

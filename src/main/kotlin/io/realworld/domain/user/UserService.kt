@@ -4,13 +4,12 @@ import io.realworld.domain.exception.*
 import io.realworld.infrastructure.security.BCryptHashProvider
 import io.realworld.infrastructure.security.JwtTokenProvider
 import javax.enterprise.context.ApplicationScoped
-import javax.inject.Inject
 
 @ApplicationScoped
 class UserService(
-    @Inject val repository: UserRepository,
-    @Inject val tokenProvider: JwtTokenProvider,
-    @Inject val hashProvider: BCryptHashProvider,
+    private val repository: UserRepository,
+    private val tokenProvider: JwtTokenProvider,
+    private val hashProvider: BCryptHashProvider,
 ) {
     fun get(username: String): UserResponse = repository.findById(username)?.run {
         UserResponse.build(this, tokenProvider.create(username))

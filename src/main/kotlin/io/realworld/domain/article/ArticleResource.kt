@@ -10,7 +10,6 @@ import io.realworld.utils.ValidationMessages.Companion.REQUEST_BODY_MUST_NOT_BE_
 import java.util.*
 import javax.annotation.security.PermitAll
 import javax.annotation.security.RolesAllowed
-import javax.inject.Inject
 import javax.transaction.Transactional
 import javax.validation.Valid
 import javax.validation.constraints.NotNull
@@ -24,13 +23,11 @@ import javax.ws.rs.core.SecurityContext
 import javax.ws.rs.core.UriBuilder
 
 @Path(ARTICLES_PATH)
-class ArticleResource {
-    @Inject
-    lateinit var service: ArticleService
-    @Inject
+class ArticleResource(
     @NoJsonRootWrap
-    lateinit var objectMapper: ObjectMapper
-
+    private val objectMapper: ObjectMapper, // FIXME: Using this annotation is throwing an unrecommended warning, see log.
+    private val service: ArticleService,
+) {
     @GET
     @Produces(APPLICATION_JSON)
     @PermitAll
