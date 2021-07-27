@@ -72,8 +72,6 @@ val ktlintFormat by tasks.creating(JavaExec::class) {
     args = listOf("-F", "src/**/*.kt")
 }
 
-/** Set noArg eligible annotations ************************/
-
 group = "io.realworld"
 version = "1.0-SNAPSHOT"
 
