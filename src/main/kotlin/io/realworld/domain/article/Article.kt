@@ -1,18 +1,22 @@
 package io.realworld.domain.article
 
 import io.quarkus.runtime.annotations.RegisterForReflection
+import io.realworld.domain.comment.Comment
 import io.realworld.domain.tag.Tag
 import io.realworld.domain.user.User
 import io.realworld.infrastructure.database.Tables.ARTICLE_TABLE
 import io.realworld.infrastructure.database.Tables.TAG_RELATIONSHIP
 import io.realworld.utils.ValidationMessages.Companion.TITLE_MUST_NOT_BE_BLANK
 import org.hibernate.annotations.GenericGenerator
+import org.hibernate.annotations.OnDelete
+import org.hibernate.annotations.OnDeleteAction.CASCADE
 import java.time.Instant
 import java.time.Instant.now
 import java.util.*
 import java.util.UUID.randomUUID
 import javax.persistence.*
 import javax.persistence.CascadeType.PERSIST
+import javax.persistence.CascadeType.REMOVE
 import javax.persistence.FetchType.EAGER
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.PastOrPresent
@@ -49,6 +53,10 @@ open class Article(
 
     @ManyToOne
     open var author: User = User(),
+
+    @OneToMany(cascade = [REMOVE], mappedBy = "article", orphanRemoval = true)
+    @OnDelete(action = CASCADE)
+    open var comments: MutableList<Comment> = mutableListOf(),
 ) {
     override fun toString(): String =
         "Article($slug, $title, ${description.take(20)}, ${body.take(20)}, $createdAt, $updatedAt, ${author.username})"

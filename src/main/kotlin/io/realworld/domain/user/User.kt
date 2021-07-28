@@ -1,13 +1,18 @@
 package io.realworld.domain.user
 
 import io.quarkus.runtime.annotations.RegisterForReflection
+import io.realworld.domain.article.Article
+import io.realworld.domain.comment.Comment
 import io.realworld.infrastructure.database.Tables.FOLLOW_RELATIONSHIP
 import io.realworld.infrastructure.database.Tables.USER_TABLE
 import io.realworld.utils.Patterns.Companion.ALPHANUMERICAL
 import io.realworld.utils.ValidationMessages.Companion.EMAIL_MUST_BE_NOT_BLANK
 import io.realworld.utils.ValidationMessages.Companion.PASSWORD_MUST_BE_NOT_BLANK
 import io.realworld.utils.ValidationMessages.Companion.USERNAME_MUST_MATCH_PATTERN
+import org.hibernate.annotations.OnDelete
+import org.hibernate.annotations.OnDeleteAction.CASCADE
 import javax.persistence.*
+import javax.persistence.CascadeType.REMOVE
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Pattern
@@ -41,6 +46,14 @@ open class User(
         inverseJoinColumns = [JoinColumn(name = "followingId", referencedColumnName = "username")]
     )
     open var follows: MutableList<User> = mutableListOf(),
+
+    @OneToMany(cascade = [REMOVE], mappedBy = "author", orphanRemoval = true)
+    @OnDelete(action = CASCADE)
+    open var articles: MutableList<Article> = mutableListOf(),
+
+    @OneToMany(cascade = [REMOVE], mappedBy = "author", orphanRemoval = true)
+    @OnDelete(action = CASCADE)
+    open var comments: MutableList<Comment> = mutableListOf(),
 ) {
     override fun toString(): String = "User($username, $email, ${bio.take(20)}..., $image)"
 

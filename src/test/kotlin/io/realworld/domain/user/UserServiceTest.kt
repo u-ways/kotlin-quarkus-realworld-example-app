@@ -55,7 +55,6 @@ internal class UserServiceTest {
         verify(repository, never()).persist(any<User>())
     }
 
-
     @Test
     fun `Given an existing email, when registered again, then EmailAlreadyExistsException should be thrown`() {
         val existingEmail = "existing@mail.com"
@@ -138,7 +137,6 @@ internal class UserServiceTest {
 
         verify(tokenProvider).create(existingUser.username)
     }
-
 
     @Test
     fun `Given an existing user, when an update occurs with an existing user's username, then UsernameAlreadyExistsException should be thrown`() {

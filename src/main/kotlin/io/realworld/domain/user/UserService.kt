@@ -19,10 +19,13 @@ class UserService(
         if (repository.existsUsername(newUser.username)) throw UsernameAlreadyExistsException()
         if (repository.existsEmail(newUser.email)) throw EmailAlreadyExistsException()
 
-        UserResponse.build(this.toEntity().also {
-            it.password = hashProvider.hash(password)
-            repository.persist(it)
-        }, tokenProvider.create(username))
+        UserResponse.build(
+            this.toEntity().also {
+                it.password = hashProvider.hash(password)
+                repository.persist(it)
+            },
+            tokenProvider.create(username)
+        )
     }
 
     fun login(userLoginRequest: UserLoginRequest) = repository.findByEmail(userLoginRequest.email)?.run {
@@ -33,19 +36,22 @@ class UserService(
     fun update(loggedInUserId: String, updateRequest: UserUpdateRequest): UserResponse = repository
         .findById(loggedInUserId)
         ?.run {
-            if (updateRequest.username != null
-                && updateRequest.username != username
-                && repository.existsUsername(updateRequest.username)
+            if (updateRequest.username != null &&
+                updateRequest.username != username &&
+                repository.existsUsername(updateRequest.username)
             ) throw UsernameAlreadyExistsException()
 
-            if (updateRequest.email != null
-                && updateRequest.email != email
-                && repository.existsEmail(updateRequest.email)
+            if (updateRequest.email != null &&
+                updateRequest.email != email &&
+                repository.existsEmail(updateRequest.email)
             ) throw EmailAlreadyExistsException()
 
-            UserResponse.build(updateRequest.applyChangesTo(this).apply {
-                if (updateRequest.password != null) this.password = hashProvider.hash(password)
-                repository.persist(this)
-            }, tokenProvider.create(username))
+            UserResponse.build(
+                updateRequest.applyChangesTo(this).apply {
+                    if (updateRequest.password != null) this.password = hashProvider.hash(password)
+                    repository.persist(this)
+                },
+                tokenProvider.create(username)
+            )
         } ?: throw UserNotFoundException()
 }

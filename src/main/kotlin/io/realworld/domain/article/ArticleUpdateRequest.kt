@@ -31,6 +31,5 @@ data class ArticleUpdateRequest(
             createdAt = existingArticle.createdAt,
             updatedAt = existingArticle.updatedAt,
             author = existingArticle.author,
-            comments = existingArticle.comments,
         )
 }

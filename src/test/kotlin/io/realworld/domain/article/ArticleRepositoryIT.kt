@@ -1,6 +1,8 @@
 package io.realworld.domain.article
 
 import io.quarkus.test.junit.QuarkusTest
+import io.realworld.domain.comment.Comment
+import io.realworld.domain.comment.CommentRepository
 import io.realworld.domain.profile.ProfileService
 import io.realworld.domain.user.UserRepository
 import io.realworld.support.factory.ArticleFactory
@@ -9,8 +11,7 @@ import io.realworld.support.factory.UserFactory
 import io.realworld.support.matchers.containsInAnyOrder
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.`is`
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import javax.inject.Inject
 import javax.transaction.Transactional
@@ -19,10 +20,15 @@ import javax.transaction.Transactional
 internal class ArticleRepositoryIT {
     @Inject
     lateinit var repository: ArticleRepository
+
     @Inject
     lateinit var userRepository: UserRepository
+
     @Inject
     lateinit var profileService: ProfileService
+
+    @Inject
+    lateinit var commentRepository: CommentRepository
 
     @Test
     @Transactional
@@ -153,5 +159,21 @@ internal class ArticleRepositoryIT {
         //  Since this is a Quarkus demo I don't want to use Hamkrest (Kotlin's reimplementation of Hamcrest)
         //  As I am sticking with the provided testing libraries as much as possible.
         // assertThat(feed, containsInAnyOrder(authorArticlesThatLoggedInUserFollows))
+    }
+
+    @Test
+    @Transactional
+    fun `Given an existing article, when deleted, then repository should cascade delete operation to owned comments`() {
+        val existingUser = UserFactory.create()
+        val createdArticle = ArticleFactory.create(author = existingUser)
+        val createdComment = Comment(article = createdArticle, author = existingUser)
+
+        userRepository.persistAndFlush(existingUser)
+        repository.persistAndFlush(createdArticle)
+        commentRepository.persistAndFlush(createdComment)
+
+        repository.deleteById(createdArticle.slug)
+
+        assertNull(repository.findById(createdArticle.slug))
     }
 }

@@ -2,7 +2,9 @@ package io.realworld.domain.user
 
 import io.quarkus.test.junit.QuarkusTest
 import io.realworld.domain.article.ArticleRepository
+import io.realworld.domain.comment.Comment
 import io.realworld.domain.comment.CommentRepository
+import io.realworld.support.factory.ArticleFactory
 import io.realworld.support.factory.UserFactory
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
@@ -47,5 +49,35 @@ internal class UserRepositoryIT {
 
         assertFalse(repository.existsEmail("INVALID_EMAIL"))
         assertTrue(repository.existsEmail(existingUser.email))
+    }
+
+    @Test
+    @Transactional
+    fun `Given an existing user with created articles, when deleted, then repository should allow cascade delete operation to owned articles`() {
+        val existingUser = UserFactory.create()
+        val createdArticle = ArticleFactory.create(author = existingUser)
+
+        repository.persistAndFlush(existingUser)
+        articleRepository.persistAndFlush(createdArticle)
+
+        repository.deleteById(existingUser.username)
+
+        assertNull(repository.findById(existingUser.username))
+    }
+
+    @Test
+    @Transactional
+    fun `Given an existing user with created comment, when deleted, then repository should cascade delete operation to owned comment`() {
+        val existingUser = UserFactory.create()
+        val createdArticle = ArticleFactory.create(author = existingUser)
+        val createdComment = Comment(article = createdArticle, author = existingUser)
+
+        repository.persistAndFlush(existingUser)
+        articleRepository.persistAndFlush(createdArticle)
+        commentRepository.persistAndFlush(createdComment)
+
+        repository.deleteById(existingUser.username)
+
+        assertNull(repository.findById(existingUser.username))
     }
 }
