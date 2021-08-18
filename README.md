@@ -10,6 +10,13 @@ We've gone to great lengths to adhere to the Quarkus community styleguides & bes
 For more information on how to this works with other frontends/backends, head over to
 the [RealWorld](https://github.com/gothinkster/realworld) repo.
 
+### Prerequisites
+- Java 11 installed and set as default.
+- Gradle 6.8.3 or higher installed.
+
+### How to start a local version of the app:
+- Run: `./gradlew --console=plain quarkusDev`
+
 ## Contributions
 
 Feedback, suggestions, and improvements are welcome, feel free to contribute.
