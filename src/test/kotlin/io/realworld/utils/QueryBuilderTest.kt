@@ -1,6 +1,9 @@
 package io.realworld.utils
 
-import io.realworld.utils.QueryBuilder.*
+import io.realworld.utils.QueryBuilder.AND
+import io.realworld.utils.QueryBuilder.JOIN
+import io.realworld.utils.QueryBuilder.SELECT
+import io.realworld.utils.QueryBuilder.WHERE
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
@@ -22,16 +25,16 @@ internal class QueryBuilderTest {
 
     @Test
     fun `Given a valid query, when built, then correct query should be returned`() {
-        val expectedCorrectQuery = """            
-            SELECT articles from ArticleEntity as articles 
-                INNER JOIN articles.tags as tags 
-                INNER JOIN tags.primaryKey.tag as tag 
-                INNER JOIN articles.author as authors 
-                INNER JOIN articles.favorites as favorites 
-                INNER JOIN favorites.primaryKey.user as user 
-            WHERE upper(tag.name) in (:tags) 
-                AND upper(user.username) in (:favorites) 
-                AND upper(authors.username) in (:authors) 
+        val expectedCorrectQuery = """
+            SELECT articles from ArticleEntity as articles
+                INNER JOIN articles.tags as tags
+                INNER JOIN tags.primaryKey.tag as tag
+                INNER JOIN articles.author as authors
+                INNER JOIN articles.favorites as favorites
+                INNER JOIN favorites.primaryKey.user as user
+            WHERE upper(tag.name) in (:tags)
+                AND upper(user.username) in (:favorites)
+                AND upper(authors.username) in (:authors)
         """
 
         val actual = QueryBuilder()

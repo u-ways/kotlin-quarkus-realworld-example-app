@@ -2,7 +2,7 @@ package io.realworld.domain.article
 
 import io.realworld.domain.exception.ArticleNotFoundException
 import io.realworld.domain.profile.FollowRelationshipRepository
-import java.util.*
+import java.util.UUID
 import javax.enterprise.context.ApplicationScoped
 import javax.transaction.Transactional
 

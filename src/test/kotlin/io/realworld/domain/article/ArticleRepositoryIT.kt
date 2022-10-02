@@ -11,7 +11,9 @@ import io.realworld.support.factory.UserFactory
 import io.realworld.support.matchers.containsInAnyOrder
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.`is`
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import javax.inject.Inject
 import javax.transaction.Transactional

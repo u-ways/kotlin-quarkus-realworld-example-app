@@ -7,8 +7,10 @@ import io.quarkus.panache.common.Sort
 import io.realworld.infrastructure.database.Tables.ARTICLE_TABLE
 import io.realworld.infrastructure.database.Tables.FOLLOW_RELATIONSHIP
 import io.realworld.utils.QueryBuilder
-import io.realworld.utils.QueryBuilder.*
-import java.util.*
+import io.realworld.utils.QueryBuilder.JOIN
+import io.realworld.utils.QueryBuilder.SELECT
+import io.realworld.utils.QueryBuilder.WHERE
+import java.util.UUID
 import javax.enterprise.context.ApplicationScoped
 
 @ApplicationScoped
@@ -54,18 +56,15 @@ class ArticleRepository : PanacheRepositoryBase<Article, UUID> {
         offset: Int = 0,
         userId: String,
     ): List<Article> = run {
+        val usernames = QueryBuilder().add(
+            SELECT("follows.id.followingId from $FOLLOW_RELATIONSHIP follows"),
+            WHERE("follows.id.userId = :loggedInUserId")
+        )
         find(
             query = QueryBuilder().add(
                 SELECT("articles from $ARTICLE_TABLE as articles"),
                 JOIN("articles.author as authors"),
-                WHERE(
-                    "authors.username in ( ${
-                        QueryBuilder().add(
-                            SELECT("follows.id.followingId from $FOLLOW_RELATIONSHIP follows"),
-                            WHERE("follows.id.userId = :loggedInUserId")
-                        )
-                    } )"
-                )
+                WHERE("authors.username in ( $usernames )")
             ).build(),
             sort = Sort
                 .descending("createdAt")

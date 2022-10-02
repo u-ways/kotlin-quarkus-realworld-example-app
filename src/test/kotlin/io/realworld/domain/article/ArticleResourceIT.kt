@@ -21,7 +21,9 @@ import java.util.UUID.randomUUID
 import javax.inject.Inject
 import javax.ws.rs.core.HttpHeaders.LOCATION
 import javax.ws.rs.core.MediaType.APPLICATION_JSON
-import javax.ws.rs.core.Response.Status.*
+import javax.ws.rs.core.Response.Status.CREATED
+import javax.ws.rs.core.Response.Status.OK
+import javax.ws.rs.core.Response.Status.UNAUTHORIZED
 
 @QuarkusTest
 @TestHTTPEndpoint(ArticleResource::class)

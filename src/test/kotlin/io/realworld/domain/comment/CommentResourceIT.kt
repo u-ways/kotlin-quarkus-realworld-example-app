@@ -11,11 +11,13 @@ import io.realworld.infrastructure.web.Routes.ARTICLES_PATH
 import io.realworld.support.factory.CommentFactory
 import io.realworld.support.factory.UserFactory
 import io.restassured.RestAssured.given
-import org.hamcrest.CoreMatchers.*
+import org.hamcrest.CoreMatchers.containsString
+import org.hamcrest.CoreMatchers.equalTo
+import org.hamcrest.CoreMatchers.`is`
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
-import java.util.*
+import java.util.UUID
 import javax.inject.Inject
 import javax.ws.rs.core.HttpHeaders.LOCATION
 import javax.ws.rs.core.MediaType.APPLICATION_JSON

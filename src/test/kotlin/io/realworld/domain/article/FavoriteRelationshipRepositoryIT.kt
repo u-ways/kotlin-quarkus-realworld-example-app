@@ -4,7 +4,9 @@ import io.quarkus.test.junit.QuarkusTest
 import io.realworld.domain.user.UserRepository
 import io.realworld.support.factory.ArticleFactory
 import io.realworld.support.factory.UserFactory
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import javax.inject.Inject
 import javax.transaction.Transactional

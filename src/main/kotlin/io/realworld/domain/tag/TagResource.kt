@@ -5,7 +5,11 @@ import io.realworld.utils.ValidationMessages.Companion.REQUEST_BODY_MUST_NOT_BE_
 import javax.transaction.Transactional
 import javax.validation.Valid
 import javax.validation.constraints.NotNull
-import javax.ws.rs.*
+import javax.ws.rs.Consumes
+import javax.ws.rs.GET
+import javax.ws.rs.POST
+import javax.ws.rs.Path
+import javax.ws.rs.Produces
 import javax.ws.rs.core.MediaType.APPLICATION_JSON
 import javax.ws.rs.core.Response
 import javax.ws.rs.core.Response.Status.CREATED

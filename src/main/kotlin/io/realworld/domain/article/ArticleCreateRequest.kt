@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonRootName
 import io.quarkus.runtime.annotations.RegisterForReflection
 import io.realworld.domain.tag.Tag
 import io.realworld.domain.user.User
-import java.util.*
+import java.util.UUID
 import java.util.UUID.randomUUID
 
 @JsonRootName("article")

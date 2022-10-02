@@ -1,7 +1,7 @@
 package io.realworld.domain.comment
 
 import io.realworld.domain.profile.FollowRelationshipRepository
-import java.util.*
+import java.util.UUID
 import javax.enterprise.context.ApplicationScoped
 
 @ApplicationScoped

@@ -11,8 +11,14 @@ import io.realworld.utils.ValidationMessages.Companion.PASSWORD_MUST_BE_NOT_BLAN
 import io.realworld.utils.ValidationMessages.Companion.USERNAME_MUST_MATCH_PATTERN
 import org.hibernate.annotations.OnDelete
 import org.hibernate.annotations.OnDeleteAction.CASCADE
-import javax.persistence.*
+import javax.persistence.Entity
 import javax.persistence.CascadeType.REMOVE
+import javax.persistence.Column
+import javax.persistence.Id
+import javax.persistence.JoinColumn
+import javax.persistence.JoinTable
+import javax.persistence.ManyToMany
+import javax.persistence.OneToMany
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Pattern
