@@ -5,7 +5,7 @@ import io.realworld.domain.tag.Tag
 import io.realworld.domain.user.User
 import java.time.Instant
 import java.time.Instant.now
-import java.util.*
+import java.util.UUID
 import java.util.UUID.randomUUID
 
 class ArticleFactory {

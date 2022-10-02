@@ -9,14 +9,21 @@ import io.realworld.infrastructure.security.Role.USER
 import io.realworld.infrastructure.web.Routes.USERS_PATH
 import io.realworld.support.factory.UserFactory
 import io.restassured.RestAssured.given
-import org.hamcrest.CoreMatchers.*
+import org.hamcrest.CoreMatchers.containsString
+import org.hamcrest.CoreMatchers.equalTo
+import org.hamcrest.CoreMatchers.notNullValue
+import org.hamcrest.CoreMatchers.nullValue
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito.*
+import org.mockito.Mockito.never
+import org.mockito.Mockito.verify
+import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import javax.inject.Inject
 import javax.ws.rs.core.HttpHeaders.LOCATION
 import javax.ws.rs.core.MediaType.APPLICATION_JSON
-import javax.ws.rs.core.Response.Status.*
+import javax.ws.rs.core.Response.Status.BAD_REQUEST
+import javax.ws.rs.core.Response.Status.CREATED
+import javax.ws.rs.core.Response.Status.OK
 
 @QuarkusTest
 @TestHTTPEndpoint(UserResource::class)

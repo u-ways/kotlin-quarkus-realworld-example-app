@@ -14,7 +14,7 @@ import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.verify
-import java.util.*
+import java.util.UUID
 
 @QuarkusTest
 internal class ArticleServiceTest {
