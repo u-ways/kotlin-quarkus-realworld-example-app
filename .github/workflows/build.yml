@@ -29,7 +29,10 @@ jobs:
           path: build/test-results/test/
   test-reporter:
     needs: build
-    permissions: read-all|write-all
+    permissions:
+      pull-requests: write
+      contents: read
+      checks: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
