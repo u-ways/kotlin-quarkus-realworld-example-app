@@ -1,3 +1,7 @@
+import org.gradle.api.JavaVersion.VERSION_11
+import org.gradle.api.tasks.wrapper.Wrapper.DistributionType.ALL
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     kotlin("jvm") version "1.4.32"
     kotlin("plugin.allopen") version "1.4.32"
@@ -50,8 +54,8 @@ group = "io.realworld"
 version = "1.0-SNAPSHOT"
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = VERSION_11
+    targetCompatibility = VERSION_11
 }
 
 allOpen {
@@ -60,7 +64,17 @@ allOpen {
     annotation("io.quarkus.test.junit.QuarkusTest")
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_11.toString()
-    kotlinOptions.javaParameters = true
+tasks {
+    test {
+        useJUnitPlatform()
+        testLogging { showStandardStreams = true }
+    }
+
+    wrapper {
+        distributionType = ALL
+    }
+
+    withType<KotlinCompile>().configureEach {
+        kotlinOptions.jvmTarget = VERSION_11.toString()
+    }
 }
