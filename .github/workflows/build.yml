@@ -37,8 +37,6 @@ jobs:
         with:
           name: test-results
           path: test-results/test/
-      - name: Display structure of downloaded files
-        run: ls -R
       - name: Make test report
         uses: dorny/test-reporter@v1
         with:
