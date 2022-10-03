@@ -27,3 +27,21 @@ jobs:
         with:
           name: test-results
           path: build/test-results/test/
+  test-reporter:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Download
+        uses: actions/download-artifact@v3
+        with:
+          name: test-results
+          path: test-results/test/
+      - name: Display structure of downloaded files
+        run: ls -R
+      - name: Make test report
+        uses: dorny/test-reporter@v1
+        with:
+          name: Test Report
+          path: 'test-results/test/*.xml'
+          reporter: java-junit
